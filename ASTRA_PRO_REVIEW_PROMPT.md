@@ -1,41 +1,44 @@
-# Astra Pro 웹 검토 요청용 프롬프트 (클릭하여 복사)
+# Astra Pro 웹 검토 요청용 프롬프트 (UI 최대 개선 집중형)
 
-아래 박스 안의 내용을 그대로 복사하여 Astra Pro 웹 채팅창에 입력하시면 됩니다:
+아래 프롬프트를 복사하여 Astra Pro 웹 채팅창에 입력하시면 됩니다:
 
 ```markdown
-당신은 최고의 웹 프론트엔드 아키텍트이자 오디오/DAW 인터랙션 전문 시니어 엔지니어입니다.
-아래 GitHub 저장소는 160 BPM 4/4 박자(총 121마디, 181.5초)의 4-파트(보컬, 드럼, 베이스, 기타) 총보/파트보 악보 뷰어와 Premiere Pro/DAW 스타일의 악보 및 타임라인 드래그 스크러빙, 그리고 마우스 우클릭 즉각 피드백 시스템을 구현한 웹 워크벤치 프로젝트입니다.
+당신은 최고의 웹 프론트엔드 아키텍트이자 글로벌 최정상급 DAW(Logic Pro, Premiere Pro, Dorico, Ableton Live) 전문 수석 UI/UX 디자이너 겸 엔지니어입니다.
+아래 GitHub 저장소는 160 BPM 4/4 박자(총 121마디, 181.50초)의 4-파트(보컬, 드럼, 베이스, 기타) 총보/파트보 악보 뷰어와 Premiere Pro/DAW 스타일의 악보 및 타임라인 드래그 스크러빙, 그리고 마우스 우클릭 즉각 피드백 시스템을 구현한 웹 워크벤치 프로젝트입니다.
 
 - GitHub Repository: https://github.com/Kyuha927/stardust-score-workbench
 - Review Guide: https://github.com/Kyuha927/stardust-score-workbench/blob/main/ASTRA_PRO_REVIEW_GUIDE.md
 - Core Code:
-  - app.mjs: https://github.com/Kyuha927/stardust-score-workbench/blob/main/app.mjs
-  - state.mjs: https://github.com/Kyuha927/stardust-score-workbench/blob/main/state.mjs
   - index.html: https://github.com/Kyuha927/stardust-score-workbench/blob/main/index.html
   - styles.css: https://github.com/Kyuha927/stardust-score-workbench/blob/main/styles.css
+  - app.mjs: https://github.com/Kyuha927/stardust-score-workbench/blob/main/app.mjs
+  - state.mjs: https://github.com/Kyuha927/stardust-score-workbench/blob/main/state.mjs
   - test_state.mjs: https://github.com/Kyuha927/stardust-score-workbench/blob/main/test_state.mjs
 
-위 저장소의 코드 및 구조를 직접 읽고 다음 5가지 핵심 영역을 엄격하고 비판적인 시각으로 종합 감사(Audit)해 주십시오:
+저장소의 코드와 UI 구조를 직접 확인하고, **[UI/UX 최대 개선 및 시각적 완성도 극대화]**를 최우선 순위로 삼아 다음 5대 영역을 엄격히 감사하고 **즉시 적용 가능한 구체적 개선 코드(HTML/CSS/JS)**를 제시해 주십시오:
 
-1. [우클릭 즉각 피드백 및 모달 인터랙션 UX]
-   - 악보 SVG 프레임 및 타임라인 트랙 우클릭 시 컨텍스트 메뉴 표시 및 좌표 계산의 정확도
-   - 모달 다이얼로그의 마디/박자/타임코드/가사 자동 매핑 및 파트/카테고리 태깅 구조
-   - 악보 SVG 인터랙티브 핀(score-feedback-pin)과 타임라인 마커(timeline-feedback-marker)의 렌더링, 툴팁, 클릭 시 원자적 탐색 연동성
-   - 인스펙터 우측 피드백 탭(필터링, 해결 상태 토글, 수정/삭제, Markdown/JSON 내보내기)의 실용성과 완성도
+1. [UI/UX 비주얼 디자인 및 레이아웃 최대 개선 (최우선)]
+   - 현재 UI의 심미적 수준을 Logic Pro / Premiere / Dorico 수준의 프리미엄 프로페셔널 다크 인터페이스로 끌어올리기 위한 레이아웃, 여백, 계층 구조 전면 개선안.
+   - 상단 트랜스포트 바, 악보 뷰포트(Score Paper), 우측 인스펙터(가사/피드백 탭), 하단 타임라인 간의 시각적 밸런스 및 공간 효율화.
+   - 글래스모피즘(Backdrop-filter blur), 미려한 보더/섀도우, 마이크로 인터랙션, 부드러운 트랜지션 및 시각적 피드백 효과.
+   - 악보 종이(Score Paper) 텍스처, 대비감, 고해상도 렌더링 및 플레이헤드 핀/마커의 세련된 비주얼 디테일.
 
-2. [DAW급 스크러빙 및 제로 리플로우 성능]
-   - getTimeFromScorePointer()의 화면 좌표 -> SVG 뷰박스 역변환 및 사전 캐싱된 시스템(_cachedSystems) 활용의 적절성
-   - 마우스 드래그 중 getBoundingClientRect() 배제 등 60fps 보장형 레이아웃 리플로우(forced reflow) 억제 수준
-   - 드래그 중 오디오 4개 스템 원자적 일시정지 및 75ms 프리뷰 스로틀링, 드래그 종료 후 원자적 재생 복구 안정성
+2. [우클릭 즉각 피드백 & 모달 다이얼로그 UX 고도화]
+   - 악보 SVG 및 타임라인 우클릭 시 컨텍스트 메뉴의 시각 디자인 및 위치 계산 매끄러움.
+   - 피드백 모달 다이얼로그의 입력 편의성: 단축키 안내, 파트/카테고리 선택 칩의 시각적 명확성, 가사 컨텍스트 표시 시인성.
+   - 악보 SVG 상 인터랙티브 핀(score-feedback-pin)과 타임라인 마커(timeline-feedback-marker)의 시인성, 호버 툴팁, 클릭 피드백.
+   - 우측 인스펙터 피드백 카드 디자인: 상태 뱃지, 카테고리 컬러 코딩, 해결/미해결 토글 시각 효과, 삭제/수정 액션 배치.
 
-3. [마스터 타임베이스(181.5s) 및 오디오 EOF(167.4s) 경계 처리]
-   - 오디오 파일이 끝난 후(167.39초)부터 악보 끝(181.50초, 121마디)까지의 단조 시계(monotonic clock) 및 키보드 화살표 탐색 시 역방향 튐 방지 로직의 견고함
+3. [DAW급 타임라인 및 스크러빙 인터랙션 고도화]
+   - 하단 타임라인 트랙의 시각화 강화: 마디 룰러(Ruler), 섹션 밴드, 보컬 프레이즈 블록의 그래픽 완성도.
+   - 마우스 드래그 및 호버 가이드(시간/마디/박자 툴팁)의 즉각적 반응성과 심미성.
+   - Zero-reflow 성능을 유지하면서도 시각적으로 가장 부드러운 60fps 플레이헤드 이동 구현.
 
-4. [상태 관리 순수성 및 캐논 불변성]
-   - state.mjs 내 불변 상태 전이(Feedback CRUD, Range, Loop, Navigation)의 순수 함수 설계
-   - 478개 음표, 279개 가사 원본 데이터(stardust-score-data.json)의 SHA-256 불변성 보존 및 드래프트 오버레이 분리 방식
+4. [성능 및 기술적 안정성 감사]
+   - getTimeFromScorePointer() 좌표 역변환 및 사전 캐싱 기하 구조의 최적성.
+   - 4개 오디오 스템 동기화, 오디오 EOF(167.4s) 이후 181.5s까지의 마스터 타임베이스 경계 처리 안정성.
+   - state.mjs의 불변 데이터 관리 및 보컬 캐논 데이터 무결성 검증.
 
-5. [종합 평가 및 개선 권고]
-   - 발견된 잠재적 버그, 브라우저 호환성(Safari, Firefox, Chrome) 위험 요소, 추가 최적화 포인트
-   - 총평 및 실무 도입 적합도 판정
+5. [즉시 적용 가능한 최대 개선 코드 패치 제안]
+   - styles.css 및 index.html, app.mjs에 바로 반영할 수 있는 구체적인 CSS/JS 개선 패치 코드 제시.
 ```

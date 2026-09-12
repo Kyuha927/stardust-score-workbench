@@ -91,8 +91,14 @@ It details the architecture, features, invariants, and specific verification gat
 
 ## 5. Instructions for Astra Pro Reviewer
 
-When auditing this codebase, please evaluate:
-1. **Interaction Rigor**: Are right-click events cleanly isolated? Does dragging feel responsive like Premiere/Logic Pro? Are keyboard shortcuts conflict-free?
-2. **State Purity**: Does `state.mjs` maintain purely functional transitions? Are feedbacks correctly sorted and exported without side effects?
-3. **Zero-Reflow Performance**: Is the SVG coordinate mapping truly reflow-free? Are DOM queries cached in `el`?
-4. **Edge Cases**: Audio EOF boundary (167.4s to 181.5s), page transitions during scrubbing, empty feedback state, localStorage error handling.
+When auditing this codebase, please evaluate and provide actionable feedback on:
+1. **Maximal UI/UX Overhaul & Aesthetic Polish (Top Priority)**:
+   - Elevation to tier-1 professional DAW standards (Logic Pro, Premiere, Dorico).
+   - Visual balance between top transport, score paper viewport, right inspector tabs, and bottom timeline ruler.
+   - Glassmorphism, refined micro-interactions, dark theme contrast, elevation shadows, typography, and button states.
+   - Design of right-click context menu, feedback modal dialog, score SVG pins, timeline markers, and feedback cards.
+   - Provide concrete, drop-in CSS/HTML improvements.
+2. **Interaction Rigor**: Are right-click events cleanly isolated? Does dragging feel responsive like Premiere/Logic Pro? Are keyboard shortcuts conflict-free?
+3. **State Purity**: Does `state.mjs` maintain purely functional transitions? Are feedbacks correctly sorted and exported without side effects?
+4. **Zero-Reflow Performance**: Is the SVG coordinate mapping truly reflow-free? Are DOM queries cached in `el`?
+5. **Edge Cases**: Audio EOF boundary (167.4s to 181.5s), page transitions during scrubbing, empty feedback state, localStorage error handling.
