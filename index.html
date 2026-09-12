@@ -1,143 +1,131 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stardust — Multi-Stem Score &amp; Japanese Lyric Proofing Workbench</title>
+  <meta name="color-scheme" content="dark">
+  <title>Stardust — 쉬운 음악 악보 워크벤치</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="consumer-ui.css">
 </head>
 <body>
   <div class="workbench-root">
-    <!-- Top Command & Transport Bar -->
     <header class="top-command-bar" role="banner">
       <div class="topbar-left">
         <div class="brand-title">
           <span>Stardust</span>
-          <span class="brand-badge">MULTI-STEM SCORE</span>
+          <span class="brand-badge">MUSIC WORKBENCH</span>
         </div>
-        <div class="metadata-pills">
-          <span class="chip chip-pass" title="Composition reference gate verified PASS">&#10003; GATE PASS</span>
-          <span class="chip chip-frozen" title="Melody &amp; Note Mappings are Frozen">&#128274; FROZEN CANON</span>
+        <div class="metadata-pills" aria-label="프로젝트 상태">
+          <span class="chip chip-pass" title="악보 데이터 확인 완료">✓ 준비 완료</span>
+          <span class="chip chip-frozen" title="원본 음표와 타이밍은 보호됩니다">🔒 원본 보호</span>
         </div>
       </div>
 
       <div class="topbar-center">
-        <!-- Transport Controls -->
-        <div class="transport-cluster" role="region" aria-label="Playback Transport">
-          <button class="btn btn-primary" id="btn-play-pause" title="Play / Pause (Space)" aria-label="Play or Pause">
-            <span id="play-icon">&#9654;</span> <span id="play-text">Play</span>
+        <div class="transport-cluster" role="region" aria-label="재생">
+          <button class="btn btn-primary" id="btn-play-pause" title="재생 / 일시정지 (Space)" aria-label="재생 또는 일시정지">
+            <span id="play-icon">▶</span>
+            <span id="play-text">Play</span>
           </button>
-          <button class="btn btn-secondary" id="btn-stop" title="Stop (S)" aria-label="Stop playback">
-            <span>&#9632;</span> <span>Stop (S)</span>
+          <button class="btn btn-secondary" id="btn-stop" title="정지 (S)" aria-label="재생 정지">
+            <span>■</span>
+            <span>Stop (S)</span>
           </button>
-          <button class="btn btn-secondary" id="btn-loop" title="Toggle Loop (L)" aria-label="Toggle loop">
-            <span>&#128257;</span> <span id="loop-text">Loop [Off]</span>
+          <button class="btn btn-secondary" id="btn-loop" title="반복 재생 (L)" aria-label="반복 재생">
+            <span>↻</span>
+            <span id="loop-text">Loop [Off]</span>
           </button>
         </div>
 
-        <div class="timecode-display" id="timecode-display" aria-live="polite">
-          00:00.00 / 03:01.50
-        </div>
+        <div class="timecode-display" id="timecode-display" aria-live="polite">00:00.00 / 03:01.50</div>
         <span class="measure-beat-badge" id="measure-beat-badge">BAR 1 · BEAT 1.0</span>
 
-        <!-- A/B Range Cluster -->
-        <div class="range-controls" role="region" aria-label="A-B Playback Range">
-          <span class="range-label">A:</span>
-          <input type="number" id="input-range-a" class="input-number" placeholder="Start" step="0.1" min="0" aria-label="Range A start in seconds">
-          <button class="btn btn-secondary" id="btn-set-a" title="Set A at playhead ([)" aria-label="Set Range A">Set A [</button>
-          <span class="range-label" style="margin-left: 6px;">B:</span>
-          <input type="number" id="input-range-b" class="input-number" placeholder="End" step="0.1" min="0" aria-label="Range B end in seconds">
-          <button class="btn btn-secondary" id="btn-set-b" title="Set B at playhead (])" aria-label="Set Range B">Set B ]</button>
-          <button class="btn btn-ghost" id="btn-clear-range" title="Clear A/B Range" aria-label="Clear Range">Clear</button>
+        <div class="range-controls" role="region" aria-label="구간 반복 설정">
+          <span class="range-label">A</span>
+          <input type="number" id="input-range-a" class="input-number" placeholder="시작" step="0.1" min="0" aria-label="반복 시작 시간">
+          <button class="btn btn-secondary" id="btn-set-a" title="현재 위치를 A로 설정 ([)" aria-label="반복 시작점 설정">A 설정</button>
+          <span class="range-label">B</span>
+          <input type="number" id="input-range-b" class="input-number" placeholder="끝" step="0.1" min="0" aria-label="반복 종료 시간">
+          <button class="btn btn-secondary" id="btn-set-b" title="현재 위치를 B로 설정 (])" aria-label="반복 종료점 설정">B 설정</button>
+          <button class="btn btn-ghost" id="btn-clear-range" title="반복 구간 지우기" aria-label="반복 구간 지우기">지우기</button>
         </div>
       </div>
 
       <div class="topbar-right">
-        <!-- Collapsible Secondary Drawer -->
         <details class="transport-drawer" id="metadata-drawer">
-          <summary class="btn btn-secondary" title="곡 정보 및 규격 파일 다운로드">
-            <span>&#8505;&#65039;</span> <span>메타데이터 &amp; 다운로드 &#9662;</span>
-          </summary>
+          <summary class="btn btn-secondary" title="곡 정보와 파일 보기">곡 정보 · 파일</summary>
           <div class="transport-drawer-content">
-            <div class="transport-drawer-section-title">악보 &amp; 음원 메타데이터</div>
-            <div class="metadata-pills" style="display: flex; flex-wrap: wrap; gap: 6px;">
-              <span class="chip chip-primary" id="chip-notes-count">478 Vocal Notes</span>
-              <span class="chip" id="chip-stems-count">4 Synchronized Stems</span>
+            <div class="transport-drawer-section-title">곡 정보</div>
+            <div class="metadata-pills" style="display:flex;flex-wrap:wrap;gap:6px;">
+              <span class="chip chip-primary" id="chip-notes-count">478 Notes</span>
+              <span class="chip" id="chip-stems-count">4 Stems</span>
               <span class="chip" id="chip-lyrics-count">279 Lyrics</span>
               <span class="chip" id="chip-nulls-count">199 Nulls</span>
               <span class="chip" id="chip-lines-count">29 Lines</span>
-              <span class="chip" id="chip-tempo-key">160 BPM &bull; Gm &bull; 4/4</span>
-              <span class="chip chip-pass" id="chip-source" title="Loaded audio source status">SOURCE: FLOW 4-STEM</span>
+              <span class="chip" id="chip-tempo-key">160 BPM · Gm · 4/4</span>
+              <span class="chip chip-pass" id="chip-source">SOURCE: FLOW 4-STEM</span>
             </div>
-            <div class="transport-drawer-section-title" style="margin-top: 6px;">공식 산출물 다운로드</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-              <a href="assets/stardust-lead-with-lyrics.musicxml" download="stardust-lead-with-lyrics.musicxml" class="btn btn-secondary" title="Download Canonical Vocal MusicXML">Vocal XML</a>
-              <a href="assets/stardust-multistaff.musicxml" download="stardust-multistaff.musicxml" class="btn btn-secondary" title="Download Multi-Staff 4-Part MusicXML">Multi-Staff XML</a>
-              <a href="assets/stardust-multistaff.mid" download="stardust-multistaff.mid" class="btn btn-secondary" title="Download Multi-Staff 4-Track MIDI">Multi-Staff MIDI</a>
-              <a href="assets/stardust-score-data.json" download="stardust-score-data.json" class="btn btn-secondary" title="Download Canonical Score JSON">JSON</a>
-              <a href="assets/score-contact-sheet.png" target="_blank" class="btn btn-secondary" title="View Score Contact Sheet">Contact Sheet</a>
-              <a href="assets/CANONFLOW_SCORE_LYRIC_CONTRACT.md" target="_blank" class="btn btn-secondary" title="View Reusable Contract">Contract</a>
+            <div class="transport-drawer-section-title">내보내기</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;">
+              <a href="assets/stardust-lead-with-lyrics.musicxml" download class="btn btn-secondary">Vocal XML</a>
+              <a href="assets/stardust-multistaff.musicxml" download class="btn btn-secondary">Multi-Staff XML</a>
+              <a href="assets/stardust-multistaff.mid" download class="btn btn-secondary">MIDI</a>
+              <a href="assets/stardust-score-data.json" download class="btn btn-secondary">JSON</a>
+              <a href="assets/score-contact-sheet.png" target="_blank" class="btn btn-secondary">Contact Sheet</a>
+              <a href="assets/CANONFLOW_SCORE_LYRIC_CONTRACT.md" target="_blank" class="btn btn-secondary">Contract</a>
             </div>
           </div>
         </details>
-        <button class="btn btn-accent" id="btn-export-draft" title="Export Draft Overrides JSON">
-          <span>&#128190;</span> <span>Export Draft</span>
-        </button>
+        <button class="btn btn-accent" id="btn-export-draft" title="가사 수정 초안 내보내기">💾 초안 내보내기</button>
       </div>
     </header>
 
-    <!-- Main Workspace Stage -->
     <main class="main-stage">
-      <!-- Left Page Navigator -->
-      <aside class="page-navigator" aria-label="Score Page Navigator">
+      <aside class="page-navigator" aria-label="악보 페이지">
         <div class="panel-header">
           <span id="pages-header-title">Pages (12)</span>
-          <div style="display: flex; gap: 4px;">
-            <button class="btn btn-secondary btn-icon" id="btn-prev-page" title="Previous Page (PageUp)" aria-label="Previous page" style="width: 22px; height: 22px; padding: 2px;">&uarr;</button>
-            <button class="btn btn-secondary btn-icon" id="btn-next-page" title="Next Page (PageDown)" aria-label="Next page" style="width: 22px; height: 22px; padding: 2px;">&darr;</button>
+          <div style="display:flex;gap:3px;">
+            <button class="btn btn-secondary btn-icon" id="btn-prev-page" title="이전 페이지 (PageUp)" aria-label="이전 페이지" style="width:22px;height:22px;padding:2px;">↑</button>
+            <button class="btn btn-secondary btn-icon" id="btn-next-page" title="다음 페이지 (PageDown)" aria-label="다음 페이지" style="width:22px;height:22px;padding:2px;">↓</button>
           </div>
         </div>
-        <div class="thumbnails-list" id="thumbnails-list">
-          <!-- Dynamically populated based on active presentation mode -->
-        </div>
+        <div class="thumbnails-list" id="thumbnails-list"></div>
       </aside>
 
-      <!-- Center Dominant Score Container -->
-      <section class="score-viewport" id="score-viewport" aria-label="Music score and source view">
+      <section class="score-viewport" id="score-viewport" aria-label="악보">
         <div class="score-toolbar">
-          <div class="score-mode-pill-group" role="tablist" aria-label="Score Presentation Mode">
-            <button type="button" class="score-mode-pill active" id="btn-mode-grand" role="tab" aria-selected="true" title="4단 묶음 총보 (Vocals + Drums + Bass + Other 합주 총보)">
-              🎼 4단 총보 (Grand Score)
-            </button>
-            <button type="button" class="score-mode-pill" id="btn-mode-stems" role="tab" aria-selected="false" title="파트별 개별 악보 분리 보기">
-              📑 파트보 분리 (Individual Stems)
-            </button>
+          <div class="score-mode-pill-group" role="tablist" aria-label="악보 보기 방식">
+            <button type="button" class="score-mode-pill active" id="btn-mode-grand" role="tab" aria-selected="true" title="전체 악보 보기">🎼 총보</button>
+            <button type="button" class="score-mode-pill" id="btn-mode-stems" role="tab" aria-selected="false" title="파트별 악보 보기">📄 파트별</button>
           </div>
 
-          <span style="font-size: 12px; font-weight: 600; color: var(--text-secondary);" id="score-page-indicator">Score View: Page 1 of 12 (Measures 1–13)</span>
-          <span class="score-live-readout" id="score-live-readout" aria-live="polite">Waiting for playback · score cursor idle</span>
+          <span id="score-page-indicator" style="font-size:12px;font-weight:600;color:var(--text-secondary);">Page 1 of 12 · Measures 1–13</span>
+          <span class="score-live-readout" id="score-live-readout" aria-live="polite">악보 준비 중</span>
           <span class="chip chip-follow" id="score-follow-state">FOLLOW: ON</span>
-          <div class="score-source-selector" id="score-source-selector" role="group" aria-label="Visible score staves" style="display: none;">
-            <span class="score-source-selector-label">VISIBLE STAVES</span>
-            <label title="Show Vocals staff only"><input type="radio" name="score-display-count" value="1"> 1 (Vocals)</label>
-            <label title="Show Vocals and Drums staves"><input type="radio" name="score-display-count" value="2"> 2 (+Drums)</label>
-            <label title="Show Vocals, Drums, and Bass staves"><input type="radio" name="score-display-count" value="3"> 3 (+Bass)</label>
-            <label title="Show all 4 staves"><input type="radio" name="score-display-count" value="all" checked> All (4 Staves)</label>
+
+          <div class="score-source-selector" id="score-source-selector" role="group" aria-label="보이는 파트 수" style="display:none;">
+            <span class="score-source-selector-label">파트</span>
+            <label><input type="radio" name="score-display-count" value="1"> 보컬</label>
+            <label><input type="radio" name="score-display-count" value="2"> +드럼</label>
+            <label><input type="radio" name="score-display-count" value="3"> +베이스</label>
+            <label><input type="radio" name="score-display-count" value="all" checked> 전체</label>
           </div>
-          <div style="display: flex; gap: 6px; margin-left: auto;">
-            <button class="btn btn-ghost" id="btn-zoom-out" style="padding: 2px 8px;" title="Zoom Out">&minus;</button>
-            <span id="zoom-level" class="mono" style="font-size: 11px; align-self: center;">100%</span>
-            <button class="btn btn-ghost" id="btn-zoom-in" style="padding: 2px 8px;" title="Zoom In">&plus;</button>
-            <button class="btn btn-ghost" id="btn-zoom-fit" style="padding: 2px 8px;" title="Reset Zoom">Fit</button>
+
+          <div style="display:flex;gap:4px;margin-left:auto;align-items:center;">
+            <button class="btn btn-ghost" id="btn-zoom-out" title="축소" style="padding:2px 8px;">−</button>
+            <span id="zoom-level" class="mono" style="font-size:11px;">100%</span>
+            <button class="btn btn-ghost" id="btn-zoom-in" title="확대" style="padding:2px 8px;">+</button>
+            <button class="btn btn-ghost" id="btn-zoom-fit" title="화면에 맞추기" style="padding:2px 8px;">맞춤</button>
           </div>
         </div>
 
         <div class="score-source-banner" id="score-source-banner" role="status">
-          <span class="source-status-dot" aria-hidden="true" style="background: var(--success); box-shadow: 0 0 7px rgba(16, 185, 129, 0.7);"></span>
+          <span class="source-status-dot" aria-hidden="true"></span>
           <strong id="score-source-status">4-PART GRAND SCORE VERIFIED</strong>
-          <span id="score-source-track">Vocals · Drums · Bass · Other (All 4 Stems Bracketed)</span>
-          <span class="score-source-detail" id="score-source-detail">All 4 stems bracketed system-by-system in full band/orchestral score layout.</span>
-          <span class="score-notation-count" id="score-notation-count">4 NOTATED STAVES · COMPLETE</span>
+          <span id="score-source-track">Vocals · Drums · Bass · Other</span>
+          <span class="score-source-detail" id="score-source-detail">4개 파트 악보가 준비되어 있습니다.</span>
+          <span class="score-notation-count" id="score-notation-count">4 NOTATED STAVES</span>
         </div>
 
         <div class="score-paper-sheet" id="score-paper">
@@ -145,80 +133,65 @@
         </div>
       </section>
 
-      <!-- Right Lyric & Feedback Inspector -->
-      <aside class="lyric-inspector" aria-label="Lyric Line & Feedback Inspector">
-        <!-- Tab Switcher -->
-        <div class="inspector-tabs" role="tablist" aria-label="Inspector Mode">
+      <aside class="lyric-inspector" aria-label="가사와 피드백">
+        <div class="inspector-tabs" role="tablist" aria-label="가사 또는 피드백">
           <button type="button" class="inspector-tab active" id="tab-lyrics" role="tab" aria-selected="true">
-            <span>📝 가사 라인</span> <span class="tab-count-badge" id="lyrics-count-badge">29</span>
+            <span>📝 가사</span>
+            <span class="tab-count-badge" id="lyrics-count-badge">29</span>
           </button>
           <button type="button" class="inspector-tab" id="tab-feedbacks" role="tab" aria-selected="false">
-            <span>💬 피드백</span> <span class="tab-count-badge feedback-badge" id="feedback-count-badge">0</span>
+            <span>💬 피드백</span>
+            <span class="tab-count-badge feedback-badge" id="feedback-count-badge">0</span>
           </button>
         </div>
 
-        <!-- Lyrics View Pane -->
         <div class="inspector-tab-pane active" id="pane-lyrics">
           <div class="inspector-banner">
-            <span>&#128274; <strong>Note timing &amp; pitches FROZEN</strong></span>
-            <span style="font-size: 10px; color: var(--text-muted);">Edits are draft overlay</span>
+            <span>🔒 <strong>원본 음표와 타이밍은 보호됩니다</strong></span>
+            <span class="chip chip-frozen" id="draft-count-chip">수정 0</span>
           </div>
 
-          <!-- Scrollable list of 29 lines -->
-          <div class="lyric-list-container" id="lyric-list" role="list">
-            <!-- Dynamically populated rows -->
-          </div>
+          <div class="lyric-list-container" id="lyric-list" role="list"></div>
 
-          <!-- Selected Line Draft Editor Drawer -->
           <div class="inspector-detail-pane" id="inspector-detail">
             <div class="detail-header">
-              <span id="editor-line-title">Select a line to edit draft text</span>
-              <span class="chip chip-frozen" id="editor-status-chip">Frozen Spec</span>
+              <span id="editor-line-title">가사 한 줄을 선택하세요</span>
+              <span class="chip chip-frozen" id="editor-status-chip">원본</span>
             </div>
 
             <div class="field-group">
-              <label class="field-label">Canonical Line Text (Reference)</label>
-              <div id="canonical-line-text" class="lyric-font" style="font-size: 13px; color: var(--text-secondary); background: var(--surface-input); padding: 5px 8px; border-radius: 4px; border: 1px solid var(--border-subtle); min-height: 26px;">
-                -
-              </div>
+              <label class="field-label">원본 가사</label>
+              <div id="canonical-line-text" class="lyric-font" style="font-size:13px;color:var(--text-secondary);background:var(--surface-input);padding:6px 8px;border-radius:6px;border:1px solid var(--border-subtle);min-height:28px;">-</div>
             </div>
 
             <div class="field-group">
-              <label class="field-label" for="input-draft-display">Draft Display Text (Overlay)</label>
-              <input type="text" id="input-draft-display" class="input-text lyric-font" placeholder="Japanese Kanji / Kana text">
+              <label class="field-label" for="input-draft-display">보이는 가사</label>
+              <input type="text" id="input-draft-display" class="input-text lyric-font" placeholder="가사를 수정하세요">
             </div>
 
             <div class="field-group">
-              <label class="field-label" for="input-draft-alignment">Draft Alignment Text (Mora / Hiragana)</label>
-              <input type="text" id="input-draft-alignment" class="input-text" placeholder="Kana reading alignment">
+              <label class="field-label" for="input-draft-alignment">읽는 법</label>
+              <input type="text" id="input-draft-alignment" class="input-text" placeholder="히라가나 읽는 법">
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-              <button class="btn btn-danger" id="btn-reset-line" title="Revert this line to canonical text">Reset to Canonical</button>
-              <button class="btn btn-primary" id="btn-save-draft" title="Save draft line overlay">Save Draft Line</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+              <button class="btn btn-ghost" id="btn-reset-line" title="원본 가사로 되돌리기">원본으로</button>
+              <button class="btn btn-primary" id="btn-save-draft" title="가사 수정 저장">수정 저장</button>
             </div>
           </div>
         </div>
 
-        <!-- Feedbacks View Pane -->
-        <div class="inspector-tab-pane" id="pane-feedbacks" style="display: none;">
+        <div class="inspector-tab-pane" id="pane-feedbacks" style="display:none;">
           <div class="feedback-actions-bar">
-            <button type="button" class="btn btn-primary" id="btn-add-feedback-now" title="현재 재생 헤드 위치에 피드백 추가 (단축키: F)">
-              <span>➕ 피드백 추가</span>
-            </button>
-            <div style="display: flex; gap: 4px;">
-              <button type="button" class="btn btn-secondary btn-icon" id="btn-copy-feedbacks" title="피드백 전체 마크다운 클립보드 복사" style="font-size: 12px; padding: 4px 8px;">
-                📋 복사
-              </button>
-              <button type="button" class="btn btn-secondary btn-icon" id="btn-export-feedbacks" title="피드백 JSON 다운로드" style="font-size: 12px; padding: 4px 8px;">
-                📥 내보내기
-              </button>
+            <button type="button" class="btn btn-primary" id="btn-add-feedback-now" title="현재 위치에 피드백 추가 (F)">＋ 피드백</button>
+            <div style="display:flex;gap:4px;">
+              <button type="button" class="btn btn-secondary" id="btn-copy-feedbacks" title="피드백 복사">복사</button>
+              <button type="button" class="btn btn-secondary" id="btn-export-feedbacks" title="피드백 파일 저장">내보내기</button>
             </div>
           </div>
 
-          <!-- Filter Toolbar -->
           <div class="feedback-filter-row">
-            <span style="font-size: 11px; color: var(--text-dim); font-weight: 600;">필터:</span>
+            <span style="font-size:10px;color:var(--text-dim);font-weight:600;">보기</span>
             <div class="feedback-filter-chips" id="feedback-filter-chips">
               <button type="button" class="filter-chip active" data-filter="all">전체</button>
               <button type="button" class="filter-chip" data-filter="vocals">보컬</button>
@@ -228,155 +201,131 @@
             </div>
           </div>
 
-          <!-- Feedbacks List -->
           <div class="feedback-list-container" id="feedback-cards-list" role="list">
             <div class="feedback-empty-state" id="feedback-empty-state">
               <span class="empty-icon">💬</span>
-              <p class="empty-title">등록된 피드백이 없습니다</p>
-              <p class="empty-desc">악보나 타임라인에서 <strong>마우스 우클릭</strong>하여 해당 위치에 즉시 피드백을 남기거나, 상단의 [➕ 피드백 추가] 버튼을 눌러보세요.</p>
+              <p class="empty-title">아직 피드백이 없습니다</p>
+              <p class="empty-desc">악보나 아래 진행바에서 우클릭하면 원하는 위치에 메모를 남길 수 있습니다.</p>
             </div>
           </div>
         </div>
       </aside>
     </main>
 
-    <!-- Compact Bottom Timeline & Transport Readout -->
-    <footer class="bottom-timeline-bar" role="contentinfo">
-      <div class="timeline-track-wrap" id="timeline-track" role="slider" aria-label="Audio Timeline Scrubber" aria-valuemin="0" aria-valuemax="181.5" aria-valuenow="0" tabindex="0">
+    <footer class="bottom-timeline-bar" role="contentinfo" aria-label="곡 진행">
+      <div class="timeline-track-wrap" id="timeline-track" role="slider" aria-label="곡 위치" aria-valuemin="0" aria-valuemax="181.5" aria-valuenow="0" tabindex="0">
         <canvas class="timeline-markers-canvas" id="timeline-canvas"></canvas>
-        <div class="timeline-range-highlight" id="timeline-range-highlight" style="display: none;"></div>
+        <div class="timeline-range-highlight" id="timeline-range-highlight" style="display:none;"></div>
         <div class="timeline-feedback-markers" id="timeline-feedback-markers"></div>
         <div class="timeline-hover-guide" id="timeline-hover-guide"></div>
         <div class="timeline-hover-tooltip" id="timeline-hover-tooltip">00:00.00</div>
-        <div class="timeline-playhead" id="timeline-playhead" style="left: 0%;"></div>
+        <div class="timeline-playhead" id="timeline-playhead" style="left:0%;"></div>
       </div>
 
       <div class="timeline-info-row">
-        <div style="display: flex; gap: 12px; align-items: center;">
+        <div style="display:flex;gap:10px;align-items:center;min-width:0;">
           <span class="mono" id="timeline-active-info">Active Line: None</span>
-          <span class="mono" id="timeline-active-event" style="color: var(--text-dim);">Event: None</span>
+          <span class="mono" id="timeline-active-event" style="color:var(--text-dim);">Event: None</span>
         </div>
-        <div style="display: flex; gap: 16px; align-items: center;">
-          <span style="font-size: 10px; color: var(--text-dim);">&larr;/&rarr;: Frame Scrub (0.1s &bull; Shift: 1.5s/1 Bar, Alt: Note) &bull; Space: Play &bull; S: Stop &bull; [: Set A &bull; ]: Set B &bull; PgUp/Dn: Page</span>
-          <span class="mono" id="timeline-duration-info">Duration: 03:01.50 (181.50s · 121 Bars)</span>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <span style="font-size:10px;color:var(--text-dim);">←/→ 위치 이동 · Space 재생 · F 피드백</span>
+          <span class="mono" id="timeline-duration-info">03:01.50 · 121 Bars</span>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- Score & Timeline Right-Click Context Menu -->
-  <div id="score-context-menu" class="score-context-menu" style="display: none;" role="menu" aria-label="Context Actions">
-    <div class="context-menu-header" id="context-menu-time-header">
+  <div id="score-context-menu" class="score-context-menu" style="display:none;" role="menu" aria-label="이 위치에서 할 일">
+    <div class="context-menu-header">
       <span class="context-menu-badge" id="ctx-bar-beat">BAR 1 · BEAT 1.0</span>
       <span class="context-menu-time" id="ctx-timecode">00:00.00</span>
     </div>
     <div class="context-menu-divider"></div>
     <button type="button" class="context-menu-item primary" id="ctx-btn-add-feedback" role="menuitem">
-      <span class="ctx-icon">💬</span>
-      <span class="ctx-label">이 지점에 피드백 남기기...</span>
-      <span class="ctx-shortcut">F</span>
+      <span class="ctx-icon">💬</span><span class="ctx-label">여기에 피드백 남기기</span><span class="ctx-shortcut">F</span>
     </button>
     <button type="button" class="context-menu-item" id="ctx-btn-play-from-here" role="menuitem">
-      <span class="ctx-icon">▶️</span>
-      <span class="ctx-label">이 위치부터 재생</span>
-      <span class="ctx-shortcut">Space</span>
+      <span class="ctx-icon">▶</span><span class="ctx-label">여기부터 재생</span><span class="ctx-shortcut">Space</span>
     </button>
     <div class="context-menu-divider"></div>
     <button type="button" class="context-menu-item" id="ctx-btn-set-range-a" role="menuitem">
-      <span class="ctx-icon">📍</span>
-      <span class="ctx-label">A 루프 시작점으로 설정</span>
-      <span class="ctx-shortcut">[</span>
+      <span class="ctx-icon">A</span><span class="ctx-label">반복 시작점</span><span class="ctx-shortcut">[</span>
     </button>
     <button type="button" class="context-menu-item" id="ctx-btn-set-range-b" role="menuitem">
-      <span class="ctx-icon">📍</span>
-      <span class="ctx-label">B 루프 종료점으로 설정</span>
-      <span class="ctx-shortcut">]</span>
+      <span class="ctx-icon">B</span><span class="ctx-label">반복 종료점</span><span class="ctx-shortcut">]</span>
     </button>
     <div class="context-menu-divider"></div>
     <button type="button" class="context-menu-item" id="ctx-btn-copy-timecode" role="menuitem">
-      <span class="ctx-icon">📋</span>
-      <span class="ctx-label">현재 위치 타임코드 복사</span>
+      <span class="ctx-icon">⧉</span><span class="ctx-label">시간 복사</span>
     </button>
   </div>
 
-  <!-- Feedback Input Modal Dialog -->
-  <div id="feedback-modal-backdrop" class="modal-backdrop" style="display: none;" role="presentation">
+  <div id="feedback-modal-backdrop" class="modal-backdrop" style="display:none;" role="presentation">
     <div class="feedback-dialog" role="dialog" aria-modal="true" aria-labelledby="feedback-dialog-title">
       <div class="dialog-header">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 20px;">💬</span>
-          <div>
-            <h3 id="feedback-dialog-title" class="dialog-title">피드백 남기기</h3>
-            <p class="dialog-subtitle" id="feedback-dialog-location">BAR 1 · BEAT 1.0 · 00:00.00</p>
-          </div>
+        <div>
+          <h3 id="feedback-dialog-title" class="dialog-title">이 부분에 메모 남기기</h3>
+          <p class="dialog-subtitle" id="feedback-dialog-location">BAR 1 · BEAT 1.0 · 00:00.00</p>
         </div>
-        <button type="button" class="btn btn-ghost btn-icon" id="btn-close-feedback-modal" aria-label="닫기" style="font-size: 18px; width: 28px; height: 28px;">&times;</button>
+        <button type="button" class="btn btn-ghost btn-icon" id="btn-close-feedback-modal" aria-label="닫기">×</button>
       </div>
 
       <div class="dialog-body">
-        <!-- Target Stem Selector -->
         <div class="field-group">
-          <label class="field-label">대상 파트 (Target Track)</label>
+          <label class="field-label">어느 파트인가요?</label>
           <div class="stem-pill-selector" id="feedback-stem-selector">
-            <button type="button" class="pill-btn active" data-stem="all">전체 (Master)</button>
-            <button type="button" class="pill-btn" data-stem="vocals">🎤 Vocals</button>
-            <button type="button" class="pill-btn" data-stem="drums">🥁 Drums</button>
-            <button type="button" class="pill-btn" data-stem="bass">🎸 Bass</button>
-            <button type="button" class="pill-btn" data-stem="other">🎹 Other</button>
+            <button type="button" class="pill-btn active" data-stem="all">전체</button>
+            <button type="button" class="pill-btn" data-stem="vocals">🎤 보컬</button>
+            <button type="button" class="pill-btn" data-stem="drums">🥁 드럼</button>
+            <button type="button" class="pill-btn" data-stem="bass">🎸 베이스</button>
+            <button type="button" class="pill-btn" data-stem="other">🎹 기타</button>
           </div>
         </div>
 
-        <!-- Category Selector -->
         <div class="field-group">
-          <label class="field-label">피드백 분류 (Category)</label>
+          <label class="field-label">어떤 내용인가요?</label>
           <div class="category-pill-selector" id="feedback-category-selector">
-            <button type="button" class="pill-btn active" data-category="vocals">🎤 보컬/발음</button>
-            <button type="button" class="pill-btn" data-category="timing">⏱️ 타이밍/리듬</button>
-            <button type="button" class="pill-btn" data-category="pitch">🎵 음정/멜로디</button>
-            <button type="button" class="pill-btn" data-category="mix">🎚️ 믹스/밸런스</button>
-            <button type="button" class="pill-btn" data-category="lyrics">📝 가사 수정</button>
-            <button type="button" class="pill-btn" data-category="general">💡 일반 메모</button>
+            <button type="button" class="pill-btn active" data-category="vocals">보컬/발음</button>
+            <button type="button" class="pill-btn" data-category="timing">타이밍</button>
+            <button type="button" class="pill-btn" data-category="pitch">음정</button>
+            <button type="button" class="pill-btn" data-category="mix">밸런스</button>
+            <button type="button" class="pill-btn" data-category="lyrics">가사</button>
+            <button type="button" class="pill-btn" data-category="general">메모</button>
           </div>
         </div>
 
-        <!-- Active Lyric Context if any -->
-        <div class="feedback-lyric-context" id="feedback-lyric-context" style="display: none;">
-          <span class="context-label">해당 마디 가사:</span>
+        <div class="feedback-lyric-context" id="feedback-lyric-context" style="display:none;">
+          <span class="context-label">가사</span>
           <span class="context-text" id="feedback-context-lyric-text">-</span>
         </div>
 
-        <!-- Feedback Input Textarea -->
         <div class="field-group">
-          <label class="field-label" for="feedback-textarea">
-            피드백 내용 <span style="color: var(--danger);">*</span>
-          </label>
-          <textarea id="feedback-textarea" class="input-textarea" rows="3" placeholder="피드백 내용을 입력하세요 (예: 2박자 보컬 싱코페이션 타이밍 늦음, 킥 어택 강조 필요 등)..."></textarea>
+          <label class="field-label" for="feedback-textarea">메모 <span style="color:var(--danger);">*</span></label>
+          <textarea id="feedback-textarea" class="input-textarea" rows="4" placeholder="예: 이 부분 보컬이 조금 늦게 들려요"></textarea>
         </div>
 
-        <!-- Author Input -->
         <div class="field-group">
-          <label class="field-label" for="feedback-author-input">작성자</label>
-          <input type="text" id="feedback-author-input" class="input-text" value="Reviewer" placeholder="작성자 이름">
+          <label class="field-label" for="feedback-author-input">이름</label>
+          <input type="text" id="feedback-author-input" class="input-text" value="Reviewer" placeholder="이름">
         </div>
       </div>
 
       <div class="dialog-footer">
-        <span class="dialog-hint">단축키: Cmd+Enter (Ctrl+Enter) 저장 · Esc 닫기</span>
-        <div style="display: flex; gap: 8px;">
+        <span class="dialog-hint">Cmd/Ctrl+Enter 저장 · Esc 닫기</span>
+        <div style="display:flex;gap:8px;">
           <button type="button" class="btn btn-secondary" id="btn-cancel-feedback">취소</button>
-          <button type="button" class="btn btn-primary" id="btn-submit-feedback">💾 피드백 저장</button>
+          <button type="button" class="btn btn-primary" id="btn-submit-feedback">저장</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
   <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
   <audio id="audio-player" src="assets/flow-stems/vocals.m4a" data-source-manifest="assets/source-manifest.json" preload="auto"></audio>
   <div id="stem-audio-bank" aria-hidden="true"></div>
 
-  <!-- Application Module Script -->
   <script type="module" src="app.mjs"></script>
+  <script type="module" src="consumer-ui.mjs"></script>
 </body>
 </html>
