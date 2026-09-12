@@ -1,0 +1,108 @@
+{
+  "schema": "canonflow.audio-source-manifest.v1",
+  "title": "Stardust",
+  "status": "FLOW_STEMS_VERIFIED",
+  "score_workbench_status": "MULTISTAFF_SCORE_VERIFIED",
+  "full_mix": null,
+  "flow_project_url": "https://www.flowmusic.app/session/989ffdce-6bcd-4c27-9f6e-e428abad6b79",
+  "flow_song_url": "https://www.flowmusic.app/song/1055584a-89c2-43eb-8943-096b0a48bfdc",
+  "flow_stem_session_url": "https://www.flowmusic.app/session/2ee4a359-80b6-483f-8ef4-8d19adcaf5c7?t=true",
+  "source_readback": {
+    "status": "VERIFIED",
+    "read_at": "2026-09-12T20:50:00+09:00",
+    "method": "Flow original song > Split stems > stem session > Download tracks (zip)",
+    "stem_count": 4,
+    "stems": [
+      {
+        "id": "drums",
+        "label": "Drums",
+        "kind": "drums",
+        "download_name": "drums.m4a",
+        "bytes": 2854592
+      },
+      {
+        "id": "bass",
+        "label": "Bass",
+        "kind": "bass",
+        "download_name": "bass.m4a",
+        "bytes": 4160021
+      },
+      {
+        "id": "other",
+        "label": "Other",
+        "kind": "other",
+        "download_name": "other.m4a",
+        "bytes": 7098772
+      },
+      {
+        "id": "vocals",
+        "label": "Vocals",
+        "kind": "vocal",
+        "download_name": "vocals.m4a",
+        "bytes": 6270229
+      }
+    ],
+    "flow_ui_inventory_text": "I've split \"Stardust\" into vocals, drums, bass, and other stems for you.",
+    "download_archive_bytes": 20384012
+  },
+  "multistaff_score": "stardust-multistaff.musicxml",
+  "multistaff_midi": "stardust-multistaff.mid",
+  "multistaff_pages_count": 12,
+  "stems": [
+    {
+      "id": "drums",
+      "label": "Drums",
+      "kind": "drums",
+      "clef": "percussion",
+      "audio": "flow-stems/drums.m4a",
+      "sha256": "9eb14cb41a9e40acac2827ad1bbe20afc5345d74e861febeef5fe084c1202871",
+      "score": "stardust-drums.musicxml",
+      "score_page_pattern": "pages/stardust-drums-page-{page}.svg",
+      "score_status": "available",
+      "status": "available",
+      "events_count": 263
+    },
+    {
+      "id": "bass",
+      "label": "Bass",
+      "kind": "bass",
+      "clef": "bass",
+      "audio": "flow-stems/bass.m4a",
+      "sha256": "86749d91c93df1ab57d975fee99b4bdf1979553eebee93a04192d67198a60365",
+      "score": "stardust-bass.musicxml",
+      "score_page_pattern": "pages/stardust-bass-page-{page}.svg",
+      "score_status": "available",
+      "status": "available",
+      "events_count": 86
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "kind": "other",
+      "clef": "treble",
+      "audio": "flow-stems/other.m4a",
+      "sha256": "b752ef38b6a371ef6734a20005c2df272f393b790cffce220072366bddc780a8",
+      "score": "stardust-other.musicxml",
+      "score_page_pattern": "pages/stardust-other-page-{page}.svg",
+      "score_status": "available",
+      "status": "available",
+      "events_count": 206
+    },
+    {
+      "id": "vocals",
+      "label": "Vocals",
+      "kind": "vocal",
+      "clef": "treble",
+      "audio": "flow-stems/vocals.m4a",
+      "sha256": "2dfb28c0ce7bce8b211b92ed2364ac0a20b722109ba6c97791bd4141ceb5c8f6",
+      "score": "stardust-lead-with-lyrics.musicxml",
+      "score_page_pattern": "pages/stardust-vocals-page-{page}.svg",
+      "score_status": "available",
+      "status": "available",
+      "events_count": 478
+    }
+  ],
+  "missing_inputs": [],
+  "next_input_contract": {},
+  "notes": "Flow is the authoritative source for this bundle. Four audio stems are loaded and synchronized. All four stems have real score data, note events, and notation pages. The multi-staff workbench renders four synchronized staves."
+}

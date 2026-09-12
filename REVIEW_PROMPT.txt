@@ -1,0 +1,54 @@
+You are the independent technical auditor and final verification authority, operating as Codex CLI 5.6 Terra Max (gpt-5.6-terra, effort ultra/max).
+
+TASK:
+Perform a strict, rigorous, final code and runtime verification audit on the Stardust 4-Part Multi-Staff Score Workbench located in:
+`/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912`
+
+MANDATORY EXECUTION DIRECTIVES:
+1. DO NOT ACTIVATE OR FOLLOW THE 'review-work' SKILL OR 'lossless-fresh-task-handoff' SKILL.
+2. DO NOT REQUIRE OR CHECK FOR A GIT REPOSITORY OR GIT WORKTREE.
+   - DO NOT run `git rev-parse`, `git status`, or any git commands.
+   - This is NOT a Git Pull Request review or Git branch review. It is an explicit in-place audit of local files on disk.
+   - You are running in read-only sandbox mode (`-s read-only`) with direct access to `/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4`.
+3. Read and evaluate `/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/CODEX_TERRA_MAX_REVIEW_GATE.md`.
+4. Directly inspect the implementation and proof files on disk:
+   - `CODEX_TERRA_MAX_REVIEW_GATE.md` & `final-report.json`:
+     * Gate 2 Specification Resolution: Verify that the Bass specification now accurately reflects authentic source data (F1 to G3 / MIDI 29-55 across 86 events). Verify that drum components reflect actual source data (70 kick, 75 snare, 118 hihat, total 263 events). Verify Other range is C3 to D#6 (MIDI 48-87 across 206 events).
+     * Gate 3 Timestamp Note: Confirm that the canonical source has Vocal Note 0 at 13.162s (Bar 9 Beat 4.099, formatted to one decimal place as Beat 4.1).
+   - `app.mjs`:
+     * Verify unified master timebase: `SCORE_TOTAL_DURATION = 181.5` (121 bars at 1.5s/bar). Verify that the timeline canvas, scrubber range, measure ticks, and timecode display are calibrated to 181.5s so Bar 121 (180s) fits cleanly inside the canvas without spilling past 100%.
+     * Verify `setAllAudioTime` applies both lower and upper clamping: `Math.max(0, Math.min(audioDur, safeTime))` where `audioDur = 167.392`.
+     * Verify pure zero-reflow measure geometry caching (`parseScoreGeometryDOM`): Pre-computes system scroll targets (`systemScrollTop`), measure boundaries (`x1`, `x2`, `centerX`), and vertical centers (`y1`, `y2`, `centerY`). Confirm that in `followScoreMeasure`, if `measure.systemIndex === lastFollowedSystemIndex`, it returns immediately with ZERO DOM queries and ZERO layout reads. Confirm that NO `querySelectorAll('g.system')` or `getBoundingClientRect()` calls occur in the active 60fps play loop.
+     * Verify timeline drag scrubbing: Confirm that `cachedTimelineRect` is stored on pointer down so `onPointerMove` executes with zero `getBoundingClientRect()` calls.
+     * Verify lyric row highlighting in `syncUI`: Confirm `lastHighlightedLineIndex` cache prevents redundant `querySelectorAll('.lyric-row')` queries on every frame.
+     * Verify `AUDIO_SEEK_THROTTLE_MS = 75` named constant for throttled audio seeking.
+     * Verify Premiere arrow key stepping: Left/Right = 0.1s (1 frame), Shift+Left/Right = 1.5s (exactly 1 bar).
+   - `state.mjs` and `test_state.mjs`:
+     * Verify that `test_state.mjs` has 16 comprehensive unit and regression tests (Tests 0 through 15).
+     * Verify Test 15 explicitly tests the 181.5s timebase, Bar 121 boundary at 180.0s (mapping to Bar 121 Beat 1.0), terminal scrub at 181.5s, audio EOF clamping to 167.392s, canonical vocal Note 0 at 13.162s, Bass range (F1-G3 / MIDI 29-55), Drum components (70/75/118), and Other range (C3-D#6).
+     * Verify zero occurrences of obsolete `175.5` in `test_state.mjs`.
+     * Verify that `test_state.mjs` cryptographically hashes `stardust-score-data.json` with SHA-256 and compares it against `CANONICAL_SCORE_DATA_SHA256` (`d5f7959789994462c0e666bfa62035814c4138403aaa22bcf9d6bae8c05a957b`).
+   - `index.html`:
+     * Verify `#timecode-display` and `#timeline-duration-info` are updated to `03:01.50 (181.50s · 121 Bars)`.
+     * Verify `#measure-beat-badge` in top toolbar.
+   - `styles.css`:
+     * Verify `.timeline-playhead::before` is a clean downward pointing triangle (`clip-path: polygon(0 0, 100% 0, 50% 100%)`).
+     * Verify responsive media queries for topbar chips at 1250px and 1100px.
+   - `layout-preview.svg` & `layout-preview.png`:
+     * Verify that the visual proof artifacts now depict the current 181.50s, 12-page, 4-staff grand score workbench (Vocals, Drums, Bass, Other), with `00:00.00 / 03:01.50` timecode, `BAR 1 · BEAT 1.0` badge, 12 thumbnail pages, and 121 measure tick marks. Confirm `layout-preview.png` is an authentic 1600x900 rendering.
+   - `final-report.json` and `worker-proof.json`:
+     * Check SHA-256 checksums and file sizes of all implementation and proof artifacts.
+5. Execute the verification commands:
+   - `node --check /Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/app.mjs`
+   - `node /Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/test_state.mjs`
+6. Formally evaluate the 6 Gates:
+   - Gate 1: Frozen Canonical Vocal Spec Preservation
+   - Gate 2: 4-Part Multi-Staff Score Parity
+   - Gate 3: Continuous Measure / Beat Synchronization & Intro Rest Sync Fix
+   - Gate 4: Zero-Reflow 60fps Playhead & Premiere-Style Scrubbing
+   - Gate 5: UI & DAW Timeline Aesthetic Quality
+   - Gate 6: Test & Runtime Server Verification
+7. Provide your final audit output:
+   - Executive Summary
+   - Per-Gate Findings with exact code references and test outputs
+   - Decisive Gate Verdict: [PASS] / [CONDITIONAL_PASS] / [FAIL]

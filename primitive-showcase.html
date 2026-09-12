@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stardust Workbench — Primitive Showcase</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      overflow-y: auto !important;
+      padding: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .showcase-section {
+      background-color: var(--surface-raised);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .showcase-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .primitive-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+    .specimen-card {
+      background-color: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      min-width: 260px;
+    }
+    .specimen-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .paper-specimen {
+      background-color: var(--paper-cream);
+      border: 1px solid var(--paper-border);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      box-shadow: var(--shadow-paper);
+      color: var(--text-score);
+    }
+  </style>
+</head>
+<body>
+  <header style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h1 style="font-size: 22px; font-weight: 700; letter-spacing: 0.5px;">Stardust Score Workbench &mdash; UI Primitive Showcase</h1>
+      <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">
+        Component validation for desktop notation &amp; Japanese lyric proofing tool (Tokens: #0F172A, #171939, #F7F3EA, #7C3AED, #6366F1, #0891B2, #DC2626)
+      </p>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="index.html" class="btn btn-primary">&larr; Open Score Workbench</a>
+    </div>
+  </header>
+
+  <!-- 1. Typography & Colors -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>1. Typography &amp; Japanese Lyric Fallbacks</span>
+      <span class="chip chip-frozen">4.5:1 Contrast Compliant</span>
+    </div>
+    <div class="primitive-row">
+      <div class="specimen-card">
+        <span class="specimen-label">UI Interface Font (system-ui / Noto Sans JP)</span>
+        <div style="font-size: 14px; font-weight: 600;">Stardust Vocal Topline &mdash; 478 Source Notes</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Key: G minor &bull; Tempo: 160 BPM &bull; Time: 4/4 &bull; 29 Lyric Lines</div>
+      </div>
+      <div class="specimen-card">
+        <span class="specimen-label">Japanese Lyric Font (Noto Serif JP / Mincho Fallback)</span>
+        <div class="lyric-font" style="font-size: 18px; color: #FFFFFF;">信号の消えた交差点 &bull; 濡れた午後に朝がほどける</div>
+        <div class="lyric-font" style="font-size: 13px; color: var(--text-secondary);">しんごうのきえたこうさてん &bull; ぬれたごごにあさがほどける</div>
+      </div>
+      <div class="specimen-card">
+        <span class="specimen-label">Monospace Data &amp; Timecodes</span>
+        <div class="mono" style="font-size: 13px; color: #38BDF8;">00:13.162 &rarr; 00:17.800 [Bar 9 Beat 4.10]</div>
+        <div class="mono" style="font-size: 11px; color: var(--text-muted);">SHA256: 111667e437572ab8b7689869b8d79800e667e869d5656a986ed16827d16452d7</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Badges & Chips -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>2. Badges &amp; Status Chips</span>
+      <span class="chip chip-pass">Verified Statuses</span>
+    </div>
+    <div class="primitive-row">
+      <span class="chip chip-pass">&#10003; REFERENCE RECEIPT PASS</span>
+      <span class="chip chip-frozen">&#128274; MELODY &amp; MAPPINGS FROZEN</span>
+      <span class="chip chip-draft">&#9998; DRAFT TEXT OVERLAY</span>
+      <span class="chip chip-danger">&#9888; OVERFLOW WARNING</span>
+      <span class="chip chip-primary">&#9835; 478 SOURCE NOTES</span>
+      <span class="chip">&#9834; 279 LYRIC NOTES</span>
+      <span class="chip">&#9899; 199 NULL NOTES</span>
+      <span class="chip">&#128196; 3 SCORE PAGES</span>
+      <span class="chip">SECTION [A]</span>
+      <span class="chip">SECTION [B]</span>
+      <span class="chip">SECTION [C]</span>
+    </div>
+  </section>
+
+  <!-- 3. Buttons & Interactive States -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>3. Buttons &amp; Action States</span>
+      <span class="chip">Interactive</span>
+    </div>
+    <div class="primitive-row">
+      <button class="btn btn-primary">Primary Action</button>
+      <button class="btn btn-secondary">Secondary Action</button>
+      <button class="btn btn-accent">Accent Utility</button>
+      <button class="btn btn-danger">Danger / Reset</button>
+      <button class="btn btn-ghost">Ghost Button</button>
+      <button class="btn btn-secondary btn-active">Active Toggle</button>
+      <button class="btn btn-primary" disabled>Disabled State</button>
+      <button class="btn btn-secondary btn-icon" title="Settings">&#9881;</button>
+      <button class="btn btn-secondary" style="box-shadow: var(--ring-focus);">Focused State</button>
+    </div>
+  </section>
+
+  <!-- 4. Transport Controls & Timecode -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>4. DAW Transport &amp; Range Controls</span>
+      <span class="chip chip-frozen">Audio M4A Linked</span>
+    </div>
+    <div class="primitive-row" style="background-color: var(--surface-card); padding: 16px; border-radius: var(--radius-md);">
+      <div class="transport-cluster">
+        <button class="btn btn-primary" id="demo-play">&#9654; Play</button>
+        <button class="btn btn-secondary" id="demo-stop">&#9632; Stop (S)</button>
+        <button class="btn btn-secondary" id="demo-loop">&#128257; Loop [Off]</button>
+      </div>
+
+      <div class="timecode-display">
+        00:13.16 / 02:55.50
+      </div>
+
+      <div class="range-controls">
+        <span class="range-label">A:</span>
+        <input type="number" class="input-number" value="13.16" step="0.1" min="0">
+        <button class="btn btn-secondary" style="padding: 3px 6px; font-size: 11px;">Set A [</button>
+        <span class="range-label" style="margin-left: 6px;">B:</span>
+        <input type="number" class="input-number" value="23.24" step="0.1" min="0">
+        <button class="btn btn-secondary" style="padding: 3px 6px; font-size: 11px;">Set B ]</button>
+        <button class="btn btn-ghost" style="padding: 3px 6px; font-size: 11px;">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Form Inputs & Draft Editor -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>5. Form Controls &amp; Draft Lyric Editor</span>
+      <span class="chip chip-draft">Safe Overlay Only</span>
+    </div>
+    <div class="primitive-row">
+      <div class="specimen-card" style="max-width: 540px;">
+        <div class="detail-header">
+          <span style="font-weight: 600;">Draft Line Editor &mdash; Line #00 [Section A]</span>
+          <span class="chip chip-draft">Draft Modified</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Canonical Frozen Reference</label>
+          <div style="font-family: var(--font-serif); font-size: 13px; color: var(--text-muted); padding: 4px 0;">
+            信号の消えた交差点 (しんごうのきえたこうさてん)
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Draft Display Text (User Overlay)</label>
+          <input type="text" class="input-text" value="信号の消えた交差点" style="font-family: var(--font-serif); font-size: 14px;">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Draft Alignment Text (Reading / Syllables)</label>
+          <input type="text" class="input-text" value="しんごうのきえたこうさてん" style="font-family: var(--font-sans); font-size: 13px;">
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+          <button class="btn btn-danger">Reset Line</button>
+          <button class="btn btn-primary">Save Draft Line</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Lyric Inspector Line States -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>6. Lyric Inspector Line States</span>
+      <span class="chip">Time-Ordered List</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px; max-width: 540px; background-color: var(--surface-card); padding: 8px; border-radius: var(--radius-md);">
+      <!-- Default -->
+      <div class="lyric-row">
+        <div class="row-meta-bar">
+          <span>#00 &bull; Sec A [00:13.16 &rarr; 00:17.80]</span>
+          <span class="chip" style="font-size: 10px;">13 moras</span>
+        </div>
+        <div class="row-text-display">信号の消えた交差点</div>
+        <div class="row-text-reading">しんごうのきえたこうさてん</div>
+      </div>
+
+      <!-- Active / Playing -->
+      <div class="lyric-row active">
+        <div class="row-meta-bar">
+          <span style="color: #38BDF8;">#01 &bull; Sec A [00:18.20 &rarr; 00:23.24] &#9654; PLAYING</span>
+          <span class="chip chip-pass" style="font-size: 10px;">Active</span>
+        </div>
+        <div class="row-text-display" style="color: #FFFFFF;">濡れた午後に朝がほどける</div>
+        <div class="row-text-reading">ぬれたごごにあさがほどける</div>
+      </div>
+
+      <!-- Selected -->
+      <div class="lyric-row selected">
+        <div class="row-meta-bar">
+          <span style="color: #C084FC;">#02 &bull; Sec A [00:23.60 &rarr; 00:28.10] &bull; SELECTED</span>
+          <span class="chip chip-primary" style="font-size: 10px;">Selected</span>
+        </div>
+        <div class="row-text-display">街は息を潜めたまま</div>
+        <div class="row-text-reading">まちはゆきをひそめたまま</div>
+      </div>
+
+      <!-- Modified / Draft Override -->
+      <div class="lyric-row modified">
+        <div class="row-meta-bar">
+          <span style="color: #FBBF24;">#03 &bull; Sec A [00:28.40 &rarr; 00:33.00] &bull; DRAFT EDITED</span>
+          <span class="chip chip-draft" style="font-size: 10px;">Draft Overridden</span>
+        </div>
+        <div class="row-text-display">遠い星の瞬きを探している</div>
+        <div class="row-text-reading">とおいほしのまたたきをさがしている</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Score Paper Card Treatment -->
+  <section class="showcase-section">
+    <div class="showcase-header">
+      <span>7. Score Paper Card &amp; Notation Treatment</span>
+      <span class="chip chip-frozen">Cream Archival Paper #F7F3EA</span>
+    </div>
+    <div class="paper-specimen">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1E293B; padding-bottom: 8px; margin-bottom: 16px;">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 700; color: #1E293B; font-family: var(--font-serif);">Stardust (スターダスト) &mdash; Lead Vocal</h2>
+          <div style="font-size: 12px; color: #475569; margin-top: 2px;">Japanese Lyric Alignment &bull; Measures 9&ndash;20 &bull; Page 1 of 3</div>
+        </div>
+        <div class="mono" style="font-size: 12px; color: #475569; text-align: right;">
+          BPM: 160.0 &bull; Key: G minor &bull; Time: 4/4
+        </div>
+      </div>
+
+      <!-- Real SVG notation snippet embedded directly from assets -->
+      <div style="background-color: #F7F3EA; overflow-x: auto; display: flex; justify-content: center; padding: 12px 0;">
+        <svg width="680" height="180" viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
+          <!-- 5-line staff -->
+          <line x1="20" y1="50" x2="660" y2="50" stroke="#1E293B" stroke-width="1.2"/>
+          <line x1="20" y1="62" x2="660" y2="62" stroke="#1E293B" stroke-width="1.2"/>
+          <line x1="20" y1="74" x2="660" y2="74" stroke="#1E293B" stroke-width="1.2"/>
+          <line x1="20" y1="86" x2="660" y2="86" stroke="#1E293B" stroke-width="1.2"/>
+          <line x1="20" y1="98" x2="660" y2="98" stroke="#1E293B" stroke-width="1.2"/>
+
+          <!-- Bar lines -->
+          <line x1="20" y1="50" x2="20" y2="98" stroke="#1E293B" stroke-width="2"/>
+          <line x1="220" y1="50" x2="220" y2="98" stroke="#1E293B" stroke-width="1.2"/>
+          <line x1="440" y1="50" x2="440" y2="98" stroke="#1E293B" stroke-width="1.2"/>
+          <line x1="660" y1="50" x2="660" y2="98" stroke="#1E293B" stroke-width="2"/>
+
+          <!-- Measure numbers -->
+          <text x="24" y="42" font-family="sans-serif" font-size="10" font-weight="bold" fill="#64748B">9</text>
+          <text x="224" y="42" font-family="sans-serif" font-size="10" font-weight="bold" fill="#64748B">10</text>
+          <text x="444" y="42" font-family="sans-serif" font-size="10" font-weight="bold" fill="#64748B">11</text>
+
+          <!-- Treble clef glyph representation -->
+          <text x="26" y="88" font-family="serif" font-size="34" fill="#1E293B">&#119070;</text>
+
+          <!-- Key signature (2 flats: Bb, Eb) -->
+          <text x="60" y="74" font-family="serif" font-size="20" fill="#1E293B">&#9837;</text>
+          <text x="70" y="62" font-family="serif" font-size="20" fill="#1E293B">&#9837;</text>
+
+          <!-- Time signature (4/4) -->
+          <text x="86" y="68" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1E293B">4</text>
+          <text x="86" y="92" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1E293B">4</text>
+
+          <!-- Notes with stems and Japanese lyric syllables placed underneath -->
+          <!-- Note 1: Bb3 -->
+          <ellipse cx="150" cy="86" rx="6" ry="4.5" fill="#1E293B" transform="rotate(-18 150 86)"/>
+          <line x1="155" y1="84" x2="155" y2="40" stroke="#1E293B" stroke-width="1.5"/>
+          <text x="146" y="132" font-family="serif" font-size="15" font-weight="bold" fill="#1E293B">し</text>
+
+          <!-- Note 2: C4 -->
+          <ellipse cx="270" cy="74" rx="6" ry="4.5" fill="#1E293B" transform="rotate(-18 270 74)"/>
+          <line x1="275" y1="72" x2="275" y2="30" stroke="#1E293B" stroke-width="1.5"/>
+          <text x="266" y="132" font-family="serif" font-size="15" font-weight="bold" fill="#1E293B">ん</text>
+
+          <!-- Note 3: D4 -->
+          <ellipse cx="360" cy="62" rx="6" ry="4.5" fill="#1E293B" transform="rotate(-18 360 62)"/>
+          <line x1="365" y1="60" x2="365" y2="20" stroke="#1E293B" stroke-width="1.5"/>
+          <text x="356" y="132" font-family="serif" font-size="15" font-weight="bold" fill="#1E293B">ご</text>
+
+          <!-- Note 4: F4 -->
+          <ellipse cx="490" cy="50" rx="6" ry="4.5" fill="#1E293B" transform="rotate(-18 490 50)"/>
+          <line x1="495" y1="48" x2="495" y2="10" stroke="#1E293B" stroke-width="1.5"/>
+          <text x="486" y="132" font-family="serif" font-size="15" font-weight="bold" fill="#1E293B">う</text>
+
+          <!-- Note 5: G4 -->
+          <ellipse cx="580" cy="38" rx="6" ry="4.5" fill="#1E293B" transform="rotate(-18 580 38)"/>
+          <line x1="585" y1="36" x2="585" y2="5" stroke="#1E293B" stroke-width="1.5"/>
+          <text x="576" y="132" font-family="serif" font-size="15" font-weight="bold" fill="#1E293B">の</text>
+        </svg>
+      </div>
+      <div style="font-size: 11px; color: #64748B; text-align: center; margin-top: 8px;">
+        Authentic SVG rendering demonstration &mdash; Japanese lyric syllables aligned directly under melodic note heads.
+      </div>
+    </div>
+  </section>
+</body>
+</html>

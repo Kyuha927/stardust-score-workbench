@@ -1,0 +1,163 @@
+{
+  "task_id": "stardust-r02-multistaff-score-20260912",
+  "status": "PASS",
+  "contract": "bounded-noncreative-v1",
+  "route_observed": {
+    "provider": "agy",
+    "model_id": "gemini-3.8-flash-high",
+    "model_display_name": "Gemini 3.8 Flash (High)",
+    "reasoning_effort": "provider-high",
+    "execution_profile": "primary"
+  },
+  "packet_verification": {
+    "packet_path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/.agent/LOCAL_WORK_CONTROL/PACKETS/stardust-r02-multistaff-score-20260912.json",
+    "packet_sha256": "8880461c67bab4168d3624ff743cb2a90cde66e70835e24e721bb06865e79ad3",
+    "prompt_path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/.agent/LOCAL_WORK_CONTROL/PACKETS/stardust-r02-multistaff-score-20260912.prompt.md",
+    "prompt_sha256": "ce6470b9bb02119022a7d618722479888b55fc93de7140d45696dc6f184a88ff",
+    "lease_id": "stardust-r02-multistaff-score-20260912-LEASE"
+  },
+  "composition_reference_gate": {
+    "receipt_path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/song-reference-analysis-20260909/composition-reference-receipt.local-work-verified.json",
+    "receipt_sha256": "4763209fc25f67ff50170a80dbd42e2d02d7b0d1487f1a3ac6e66433f1603716",
+    "status": "PASS"
+  },
+  "approved_input_hashes": {
+    "flow-stems/drums.m4a": "9eb14cb41a9e40acac2827ad1bbe20afc5345d74e861febeef5fe084c1202871",
+    "flow-stems/bass.m4a": "86749d91c93df1ab57d975fee99b4bdf1979553eebee93a04192d67198a60365",
+    "flow-stems/other.m4a": "b752ef38b6a371ef6734a20005c2df272f393b790cffce220072366bddc780a8",
+    "flow-stems/vocals.m4a": "2dfb28c0ce7bce8b211b92ed2364ac0a20b722109ba6c97791bd4141ceb5c8f6",
+    "gemini-lead-topline.json": "fe4bf14b07e4d0e58c09e87b02c1e1a22618bca459772fcb3eaa0f9318d4cc76",
+    "lyric-alignment.json": "38ac63a94b4dc871ba8a37141839e5cf831f6b252eba950324301fdbbf4c143c",
+    "composition-reference-receipt.local-work-verified.json": "4763209fc25f67ff50170a80dbd42e2d02d7b0d1487f1a3ac6e66433f1603716"
+  },
+  "required_outputs": {
+    "index.html": {
+      "sha256": "9e5f724180f0f127f9c637cb1eb753b56280a1387a58baea4fadcb5943c1ba50",
+      "size_bytes": 13208
+    },
+    "primitive-showcase.html": {
+      "sha256": "6d151387281a51017c173b252371a0698d92f989f5f11a5258fee038f4f65fe3",
+      "size_bytes": 16467
+    },
+    "styles.css": {
+      "sha256": "bf973157eb3f1c6dfe71ba1e8a9d2b73c3ce38a8eb3bfad953991ab6d7611780",
+      "size_bytes": 24639
+    },
+    "app.mjs": {
+      "sha256": "0c8c530a394c07100a856b4d29777df23b6f7f80601f0da1a671194d38121566",
+      "size_bytes": 74483
+    },
+    "state.mjs": {
+      "sha256": "c7ca43374c4a2bce28ee15706b431aef46ab4efeddc917b0d92435fae815a69f",
+      "size_bytes": 16944
+    },
+    "server.py": {
+      "sha256": "51e8b2567cad351caf91e7ad3d67986072879cfec02f972d2e084263b4366283",
+      "size_bytes": 7345
+    },
+    "test_state.mjs": {
+      "sha256": "961f09fc4ed32e4ff525e5513bb058dfa89f4286c7fa7e883573e25a77ae31ed",
+      "size_bytes": 19721
+    },
+    "test_server.py": {
+      "sha256": "0f9110d21e956e720a7d0cbd3e945b221a08d58e942807384a859362799a5e70",
+      "size_bytes": 10751
+    },
+    "build_score_bundle.py": {
+      "sha256": "85df5533164d754913a07186a7f10f81bfdd8b0cc4bdd4920e59d026b1bc6062",
+      "size_bytes": 45397
+    },
+    "stardust-score-data.json": {
+      "sha256": "d5f7959789994462c0e666bfa62035814c4138403aaa22bcf9d6bae8c05a957b",
+      "size_bytes": 1817012
+    },
+    "stardust-multistaff.musicxml": {
+      "sha256": "cb459b7b99c446aca3efb0e803ab396d53af529afd496998f98adb74034be551",
+      "size_bytes": 530268
+    },
+    "stardust-multistaff.mid": {
+      "sha256": "210e920199a6ec6873b0fe35bfd65fa9ac6c808ac55da2aacf87b6eb35cc0e29",
+      "size_bytes": 11076
+    },
+    "stardust-drums.musicxml": {
+      "sha256": "49033c78cd06d4b1e58ceb6123e55aba053fbea3d2167da448b0927fa292c2d8",
+      "size_bytes": 102077
+    },
+    "stardust-drums.mid": {
+      "sha256": "838b16708fd523812deb01272249437a94a5e5b448996b0b082d16fd466b7a1b",
+      "size_bytes": 2045
+    },
+    "stardust-bass.musicxml": {
+      "sha256": "2dc90db6c352b487f2d9eb96b22c45ba7b7d7d5079a279dcafcadbfcaaced03d",
+      "size_bytes": 74068
+    },
+    "stardust-bass.mid": {
+      "sha256": "b0a1e03ef24ec957a9fd7e2e59c39b5ad7a73dc0182d6920922af0908924fe4d",
+      "size_bytes": 855
+    },
+    "stardust-other.musicxml": {
+      "sha256": "f6a6c533e6347f8aa40014ecbb98b3e6311483aa211251932cbfaceb8edb7d80",
+      "size_bytes": 126291
+    },
+    "stardust-other.mid": {
+      "sha256": "27a38ce8638d36b12641d9623d17a50f300a56f34069c3fe2ffe4abd4ddf685d",
+      "size_bytes": 1909
+    },
+    "stardust-lead-with-lyrics.musicxml": {
+      "sha256": "981ae60fcff4715de05174e798710a94830f1fb0442e53bc089b7df251d9bdf7",
+      "size_bytes": 237979
+    },
+    "stardust-lead-with-lyrics.mid": {
+      "sha256": "2b09764a7498499bbcbe62ed5fbe14944ef3f5edff652b9e3cf8a464440e4e89",
+      "size_bytes": 6333
+    },
+    "DESIGN.md": {
+      "sha256": "6b85907ecd7c25afa538013ad2c556e909baae45aa3a2f470294c409caa170b6",
+      "size_bytes": 7302
+    },
+    "README.md": {
+      "sha256": "0ef6106a9598602266548e713d45a7332b1dfda7d1092e3b358671dae1ab7e82",
+      "size_bytes": 3675
+    },
+    "CANONFLOW_SCORE_LYRIC_CONTRACT.md": {
+      "sha256": "0cac36cc9fab5e4c264fa463d93c56a2515e76f9f5d60c77b4e25b5a7650fd99",
+      "size_bytes": 8515
+    },
+    "SOURCE_READBACK_AUDIT.md": {
+      "sha256": "54fcd0d1511eeda8e474292edab23f0233d3bdf7d987886179cf273490832179",
+      "size_bytes": 6284
+    },
+    "render-report.json": {
+      "sha256": "59f29b32290844daa0175bc76e506a33849bc7f1a8bcf6906cf54f02b6741d30",
+      "size_bytes": 3508
+    },
+    "tool-report.json": {
+      "sha256": "d0c94adefd0c78b126020c7894e35c3497c0c5c781d41a0d7efd40fed143b328",
+      "size_bytes": 3737
+    },
+    "final-report.json": {
+      "sha256": "3ca01f396e97201fc0ef1fc77f2efcef6c70ee3fac4ae1ae19d5563aa6170fff",
+      "size_bytes": 6292
+    },
+    "score-contact-sheet.png": {
+      "sha256": "aa07bcd54132aef82362187cbb744c441644e36caf30f636ad7d73ed9a8a4408",
+      "size_bytes": 575414
+    },
+    "layout-preview.svg": {
+      "sha256": "e8d5ae3a486088e80827c46c749dcb7d5b4800781ff20f752b42289df6818416",
+      "size_bytes": 36326
+    },
+    "layout-preview.png": {
+      "sha256": "63e8cc961858084260e3d0b38a0028646890ef7d09b9200e69a2c5abeca6dbaf",
+      "size_bytes": 131094
+    }
+  },
+  "verification_commands_executed": [
+    "node --check app.mjs (exit code 0)",
+    "node --check state.mjs (exit code 0)",
+    "node test_state.mjs (exit code 0, 16/16 tests PASS)",
+    "python3 -m py_compile server.py test_server.py (exit code 0)",
+    "python3 test_server.py (exit code 0, 15/15 checks PASS)"
+  ],
+  "browser_qa_notice": "No browser or computer control actions were performed by this model worker. Deterministic CLI, SVG/PNG rendering, and HTTP endpoint tests executed exclusively."
+}

@@ -1,0 +1,43 @@
+You are the independent technical auditor and final verification authority, operating as Codex CLI 5.6 Sol Max (gpt-5.6-sol, effort ultra/max).
+
+TASK:
+Perform a strict, rigorous, final code, architecture, and runtime verification audit on the Stardust 4-Part Multi-Staff Score Workbench located in:
+`/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912`
+
+MANDATORY EXECUTION DIRECTIVES:
+1. DO NOT ACTIVATE OR FOLLOW THE 'review-work' SKILL OR 'lossless-fresh-task-handoff' SKILL.
+2. DO NOT REQUIRE OR CHECK FOR A GIT REPOSITORY OR GIT WORKTREE.
+   - DO NOT run `git rev-parse`, `git status`, or any git commands.
+   - This is NOT a Git Pull Request review or Git branch review. It is an explicit in-place audit of local files on disk.
+   - You are running in read-only sandbox mode (`-s read-only`) with direct access to `/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4`.
+3. Read and evaluate `/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/CODEX_SOL_MAX_REVIEW_GATE.md`.
+4. Directly inspect the implementation and proof files on disk:
+   - `app.mjs`:
+     * Verify `getTimeFromScorePointer(e, svg, geometryMap)`: coordinate transformation via `svg.getScreenCTM().inverse()`, vertical system grouping, nearest system selection, horizontal measure beat interpolation, and duration clamping. Verify zero DOM layout reads (<0.05ms execution).
+     * Verify `wireScoreInteraction(svg, geometryMap, notesMap)`: pointerdown, pointermove, pointerup, pointercancel, setPointerCapture, score-dragging classes, playback pause during dragging and resume on release, stationary click note selection.
+     * Verify `createScoreOverlay(svg)` and `updateScoreCursorFast()`: creation and real-time positioning of `.score-karaoke-cursor-line`, `.score-karaoke-cursor-hitarea`, `.score-playhead-handle`, `.score-playhead-handle-bottom`, and `.score-karaoke-cursor-label`.
+     * Verify keyboard navigation: `ArrowLeft`/`ArrowRight` (0.1s frame), `Shift+ArrowLeft`/`ArrowRight` (1.5s 1 bar), `Ctrl/Cmd+ArrowLeft`/`ArrowRight` (bar snap), `Alt+ArrowLeft`/`ArrowRight` (note snap), `ArrowUp`/`ArrowDown` (lyric line jump).
+     * Verify auto load of active lyric line into editor drawer on scrubbing (`app.mjs:431`).
+     * Verify unified master timebase `SCORE_TOTAL_DURATION = 181.5` (121 bars at 1.5s/bar).
+     * Verify `AUDIO_SEEK_THROTTLE_MS = 75`.
+   - `styles.css`:
+     * Verify `.score-karaoke-cursor-line`, `.score-karaoke-cursor-hitarea`, `.score-playhead-handle`, `.score-playhead-handle-bottom`, `.score-karaoke-cursor-label`, `.score-svg-frame svg`, `.score-dragging`.
+   - `state.mjs` and `test_state.mjs`:
+     * Verify 16 comprehensive unit and regression tests (Tests 0 through 15).
+     * Verify SHA-256 integrity of `stardust-score-data.json` matches `d5f7959789994462c0e666bfa62035814c4138403aaa22bcf9d6bae8c05a957b`.
+5. Execute verification commands:
+   - `node --check /Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/app.mjs`
+   - `node /Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/test_state.mjs`
+   - `curl -s -I http://127.0.0.1:8791/index.html`
+6. Formally evaluate the 6 Gates in `CODEX_SOL_MAX_REVIEW_GATE.md`:
+   - Gate 1: Frozen Canonical Vocal Spec Preservation
+   - Gate 2: 4-Part Multi-Staff Score Parity
+   - Gate 3: Continuous Measure / Beat Synchronization & Intro Rest Sync Fix
+   - Gate 4: Zero-Reflow 60fps Playhead & Premiere-Style Scrubbing
+   - Gate 5: Interactive Score Sheet Playhead & Instant Feedback Integration
+   - Gate 6: Test & Runtime Server Verification
+7. Provide your final audit output:
+   - Executive Summary
+   - Per-Gate Findings with exact code references and command outputs
+   - Decisive Gate Verdict: [PASS] / [CONDITIONAL_PASS] / [FAIL]
+   - Concrete, actionable feedback recommendations if any.

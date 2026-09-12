@@ -1,0 +1,115 @@
+{
+  "packet_schema_version": "local-work-task-packet.v2",
+  "issued_by": "LOCAL_WORK",
+  "execution_kind": "model_worker",
+  "task_id": "stardust-r02-multistaff-score-20260912",
+  "task_class": "implementation",
+  "project_id": "local-work-e8ff9572583d7baf",
+  "canonical_root": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4",
+  "repository": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4",
+  "base_branch": "",
+  "worktree_or_branch": "",
+  "input_commit": "",
+  "objective": "Stardust 악보 작업을 이어서 완료한다. 현재 1개의 보컬 표기 staff와 3개의 pending instrument source row로 멈춘 상태를 해소하고, 실제로 검증 가능한 Vocals·Drums·Bass·Other 4-part 다단 악보와 동기화 재생 화면을 하나의 완전한 self-contained application으로 만든다. 악기 전사 데이터가 확보되지 않으면 가짜 음표를 만들지 말고 정확한 입력 경계를 증거와 함께 기록하되, 가능한 모든 안전한 전사·연결·렌더링·검증 작업은 끝까지 수행한다.",
+  "source_of_truth": [
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/stardust-r02-multistaff-score-20260912.json",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/.agent/LOCAL_WORK_CONTROL/PACKETS/stardust-r02-multistaff-score-20260912.prompt.md"
+  ],
+  "approved_inputs_and_hashes": [
+    {
+      "path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/stardust-r02-multistaff-score-20260912.json",
+      "sha256": "ad97f4a3632992b12dc24d294a0182cac17922154a582db30e6710c2bbcd243c"
+    },
+    {
+      "path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/.agent/LOCAL_WORK_CONTROL/PACKETS/stardust-r02-multistaff-score-20260912.prompt.md",
+      "sha256": "ce6470b9bb02119022a7d618722479888b55fc93de7140d45696dc6f184a88ff"
+    },
+    {
+      "path": "/Users/macpro/.local-work/worker-routing/COMPOSITION_REFERENCE_ANALYSIS_POLICY.json",
+      "sha256": "ba3b512853d8408417446496798990b33d2a15c2d96a387ad17366bb3c3fb1b6"
+    },
+    {
+      "path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/song-reference-analysis-20260909/composition-reference-receipt.local-work-verified.json",
+      "sha256": "4763209fc25f67ff50170a80dbd42e2d02d7b0d1487f1a3ac6e66433f1603716"
+    },
+    {
+      "path": "/Users/macpro/.local-work/worker-routing/local_work_dispatch.py",
+      "sha256": "67903eb91ee6ca2468930ce5a361d8f7c28c8486cacc9575f9008e0f1b0f93ef"
+    }
+  ],
+  "allowed_read_paths": [
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4",
+    "/Users/macpro/.local-work/worker-routing"
+  ],
+  "allowed_write_paths": [
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912"
+  ],
+  "forbidden_paths": [
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/.git"
+  ],
+  "required_outputs": [
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/index.html",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/primitive-showcase.html",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/styles.css",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/app.mjs",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/state.mjs",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/server.py",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/test_state.mjs",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/test_server.py",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/build_score_bundle.py",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/stardust-score-data.json",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/stardust-multistaff.musicxml",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/stardust-multistaff.mid",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/stardust-lead-with-lyrics.musicxml",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/stardust-lead-with-lyrics.mid",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/DESIGN.md",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/README.md",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/CANONFLOW_SCORE_LYRIC_CONTRACT.md",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/SOURCE_READBACK_AUDIT.md",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/render-report.json",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/tool-report.json",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/final-report.json",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/worker-proof.json",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/score-contact-sheet.png",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/layout-preview.svg",
+    "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912/layout-preview.png"
+  ],
+  "output_dir": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/stardust-r02-multistaff-score-20260912",
+  "prompt_path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/.agent/LOCAL_WORK_CONTROL/PACKETS/stardust-r02-multistaff-score-20260912.prompt.md",
+  "exact_model_route": {
+    "provider": "agy",
+    "model_display_name": "Gemini 3.8 Flash (High)",
+    "model_id": "gemini-3.8-flash-high",
+    "reasoning_effort": "provider-high",
+    "wrapper": "/Users/macpro/.local-work/worker-routing/flash38_exec.sh",
+    "decision": "/Users/macpro/.local-work/worker-routing/FLASH38_DECISION.json",
+    "profile_id": "primary",
+    "fallback_allowed": false
+  },
+  "cost_or_quota_cap": {
+    "maximum_runtime_seconds": 600
+  },
+  "maximum_attempts": 1,
+  "required_tests_or_qc": [
+    "Exact model, final SUCCESS and requested output evidence"
+  ],
+  "Git_rules": {
+    "mutation_allowed": false
+  },
+  "Drive_rules": {
+    "mutation_allowed": false
+  },
+  "completion_boundary": "Untrusted worker candidate, independently verified before acceptance",
+  "lease_id": "stardust-r02-multistaff-score-20260912-LEASE",
+  "issued_at": "2026-09-12T11:37:41Z",
+  "expires_at": "2026-09-12T12:07:41Z",
+  "packet_sha256": "8880461c67bab4168d3624ff743cb2a90cde66e70835e24e721bb06865e79ad3",
+  "execution_contract": "bounded-noncreative-v1",
+  "composition_scope": true,
+  "composition_phase": "feedback",
+  "composition_reference_policy": "/Users/macpro/.local-work/worker-routing/COMPOSITION_REFERENCE_ANALYSIS_POLICY.json",
+  "composition_reference_policy_sha256": "ba3b512853d8408417446496798990b33d2a15c2d96a387ad17366bb3c3fb1b6",
+  "composition_reference_receipt": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/song-reference-analysis-20260909/composition-reference-receipt.local-work-verified.json",
+  "composition_reference_receipt_sha256": "4763209fc25f67ff50170a80dbd42e2d02d7b0d1487f1a3ac6e66433f1603716",
+  "input_snapshot_sha256": "a60105d68cec2d71afed92b054a20ce43dcf8eb77fb57373b5e48ad6373fc630"
+}

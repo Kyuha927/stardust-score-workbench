@@ -1,0 +1,22 @@
+{
+  "schema_version": "stardust.webgpt-pro-blocker.v1",
+  "status": "BLOCKED_LUNA_MAX_ROUTE_MISMATCH",
+  "observed_at": "2026-09-11T05:15:58+09:00",
+  "task_id": "01a08c95-ab05-7661-ba69-99657e475544",
+  "requested_work": "Obtain WebGPT Pro design and UX guidance for the standalone Stardust score-and-lyrics tool.",
+  "required_surface": "in-app browser or unified computer-use surface",
+  "required_runtime": {
+    "model": "gpt-5.6-luna",
+    "effort": "max"
+  },
+  "observed_runtime": {
+    "model": "gpt-5.6-sol",
+    "effort": "ultra",
+    "source": "current task turn_context"
+  },
+  "decision": "Browser and computer-control execution was not attempted because the active runtime does not satisfy the Luna Max route lock.",
+  "silent_substitution": false,
+  "browser_actions_performed": false,
+  "scope_effect": "Only WebGPT Pro advisory guidance is unavailable. Local implementation, deterministic verification, live HTTP testing, and static visual inspection remain valid.",
+  "acceptance": "The execution prompt explicitly permits this exact verifiable blocker in place of a completed WebGPT Pro result."
+}

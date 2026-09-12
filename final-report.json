@@ -1,0 +1,193 @@
+{
+  "status": "PASS",
+  "task_id": "stardust-r02-multistaff-score-20260912",
+  "contract": "bounded-noncreative-v1",
+  "composition_reference_gate": {
+    "receipt_path": "/Users/macpro/Documents/Codex/2026-09-09/1-2-flash-3-bgm-4/work/antigravity-runs/song-reference-analysis-20260909/composition-reference-receipt.local-work-verified.json",
+    "receipt_sha256": "4763209fc25f67ff50170a80dbd42e2d02d7b0d1487f1a3ac6e66433f1603716",
+    "status": "PASS"
+  },
+  "objective_summary": {
+    "objective": "Transform single-staff Stardust score workbench into a self-contained multi-staff score application exposing real per-stem score data and synchronized notation for Vocals, Drums, Bass, and Other, while preserving the 478 vocal note canon exactly.",
+    "completion_state": "COMPLETE",
+    "notated_staves_count": 4,
+    "pending_staves_count": 0,
+    "total_measures": 121,
+    "tempo_bpm": 160.0,
+    "key_signature": "G minor",
+    "time_signature": "4/4"
+  },
+  "stem_event_counts": {
+    "vocals": {
+      "kind": "vocal",
+      "clef": "treble",
+      "audio_file": "assets/flow-stems/vocals.m4a",
+      "events_count": 478,
+      "lyric_notes_count": 279,
+      "null_notes_count": 199,
+      "extension_notes_count": 50,
+      "score_status": "available",
+      "status": "FROZEN_CANON_PRESERVED"
+    },
+    "drums": {
+      "kind": "drums",
+      "clef": "percussion",
+      "audio_file": "assets/flow-stems/drums.m4a",
+      "events_count": 263,
+      "components": {
+        "kick": 70,
+        "snare": 75,
+        "hihat": 118
+      },
+      "score_status": "available",
+      "status": "EXTRACTED_FROM_AUDIO_STEM"
+    },
+    "bass": {
+      "kind": "bass",
+      "clef": "bass",
+      "audio_file": "assets/flow-stems/bass.m4a",
+      "events_count": 86,
+      "pitch_range": "F1 to G3 (MIDI 29-55)",
+      "score_status": "available",
+      "status": "EXTRACTED_FROM_AUDIO_STEM"
+    },
+    "other": {
+      "kind": "other",
+      "clef": "treble",
+      "audio_file": "assets/flow-stems/other.m4a",
+      "events_count": 206,
+      "pitch_range": "C3 to D#6 (MIDI 48-87)",
+      "score_status": "available",
+      "status": "EXTRACTED_FROM_AUDIO_STEM"
+    }
+  },
+  "invariants_verified": {
+    "vocal_event_count": 478,
+    "vocal_melody_pitches_preserved": true,
+    "vocal_durations_preserved": true,
+    "lyric_lines_count": 29,
+    "lyric_syllables_preserved": true,
+    "blackout_regions_preserved": 36,
+    "tempo_bpm": 160.0,
+    "time_signature": "4/4",
+    "total_measures": 121,
+    "no_invented_notes": true,
+    "no_external_network": true
+  },
+  "artifacts": {
+    "stardust-score-data.json": {
+      "sha256": "d5f7959789994462c0e666bfa62035814c4138403aaa22bcf9d6bae8c05a957b",
+      "size_bytes": 1817012,
+      "schema": "canonflow.multistaff-score-bundle.v1"
+    },
+    "stardust-multistaff.musicxml": {
+      "sha256": "cb459b7b99c446aca3efb0e803ab396d53af529afd496998f98adb74034be551",
+      "size_bytes": 530268,
+      "parts_count": 4,
+      "measures_count": 121
+    },
+    "stardust-multistaff.mid": {
+      "sha256": "210e920199a6ec6873b0fe35bfd65fa9ac6c808ac55da2aacf87b6eb35cc0e29",
+      "size_bytes": 11076,
+      "tracks_count": 5
+    },
+    "stardust-drums.musicxml": {
+      "sha256": "49033c78cd06d4b1e58ceb6123e55aba053fbea3d2167da448b0927fa292c2d8",
+      "size_bytes": 102077
+    },
+    "stardust-drums.mid": {
+      "sha256": "838b16708fd523812deb01272249437a94a5e5b448996b0b082d16fd466b7a1b",
+      "size_bytes": 2045
+    },
+    "stardust-bass.musicxml": {
+      "sha256": "2dc90db6c352b487f2d9eb96b22c45ba7b7d7d5079a279dcafcadbfcaaced03d",
+      "size_bytes": 74068
+    },
+    "stardust-bass.mid": {
+      "sha256": "b0a1e03ef24ec957a9fd7e2e59c39b5ad7a73dc0182d6920922af0908924fe4d",
+      "size_bytes": 855
+    },
+    "stardust-other.musicxml": {
+      "sha256": "f6a6c533e6347f8aa40014ecbb98b3e6311483aa211251932cbfaceb8edb7d80",
+      "size_bytes": 126291
+    },
+    "stardust-other.mid": {
+      "sha256": "27a38ce8638d36b12641d9623d17a50f300a56f34069c3fe2ffe4abd4ddf685d",
+      "size_bytes": 1909
+    },
+    "stardust-lead-with-lyrics.musicxml": {
+      "sha256": "981ae60fcff4715de05174e798710a94830f1fb0442e53bc089b7df251d9bdf7",
+      "size_bytes": 237979
+    },
+    "stardust-lead-with-lyrics.mid": {
+      "sha256": "2b09764a7498499bbcbe62ed5fbe14944ef3f5edff652b9e3cf8a464440e4e89",
+      "size_bytes": 6333
+    },
+    "score-contact-sheet.png": {
+      "sha256": "aa07bcd54132aef82362187cbb744c441644e36caf30f636ad7d73ed9a8a4408",
+      "size_bytes": 575414
+    },
+    "app.mjs": {
+      "sha256": "0c8c530a394c07100a856b4d29777df23b6f7f80601f0da1a671194d38121566",
+      "size_bytes": 74483
+    },
+    "state.mjs": {
+      "sha256": "c7ca43374c4a2bce28ee15706b431aef46ab4efeddc917b0d92435fae815a69f",
+      "size_bytes": 16944
+    },
+    "index.html": {
+      "sha256": "9e5f724180f0f127f9c637cb1eb753b56280a1387a58baea4fadcb5943c1ba50",
+      "size_bytes": 13208
+    },
+    "styles.css": {
+      "sha256": "bf973157eb3f1c6dfe71ba1e8a9d2b73c3ce38a8eb3bfad953991ab6d7611780",
+      "size_bytes": 24639
+    },
+    "server.py": {
+      "sha256": "51e8b2567cad351caf91e7ad3d67986072879cfec02f972d2e084263b4366283",
+      "size_bytes": 7345
+    },
+    "test_state.mjs": {
+      "sha256": "961f09fc4ed32e4ff525e5513bb058dfa89f4286c7fa7e883573e25a77ae31ed",
+      "size_bytes": 19721
+    },
+    "test_server.py": {
+      "sha256": "0f9110d21e956e720a7d0cbd3e945b221a08d58e942807384a859362799a5e70",
+      "size_bytes": 10751
+    },
+    "build_score_bundle.py": {
+      "sha256": "85df5533164d754913a07186a7f10f81bfdd8b0cc4bdd4920e59d026b1bc6062",
+      "size_bytes": 45397
+    }
+  },
+  "verification_commands_executed": [
+    {
+      "command": "node --check app.mjs",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "node --check state.mjs",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "node test_state.mjs",
+      "exit_code": 0,
+      "passed_tests": 16,
+      "failed_tests": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 -m py_compile server.py test_server.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "python3 test_server.py",
+      "exit_code": 0,
+      "passed_endpoints": 15,
+      "status": "PASS"
+    }
+  ]
+}
