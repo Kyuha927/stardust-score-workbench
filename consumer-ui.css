@@ -1,0 +1,755 @@
+/* ==========================================================================
+   Stardust Consumer UI Layer
+   Score-first, low-friction interface for general music creators.
+   Loaded after styles.css so the existing application logic and IDs remain intact.
+   ========================================================================== */
+
+html.easy-consumer-ui {
+  --topbar-height: 56px;
+  --bottombar-height: 58px;
+  --leftpanel-width: 96px;
+  --rightpanel-width: 320px;
+  --easy-bg: #0f1115;
+  --easy-panel: rgba(26, 29, 35, 0.96);
+  --easy-panel-soft: rgba(26, 29, 35, 0.82);
+  --easy-border: rgba(255, 255, 255, 0.09);
+  --easy-accent: #4d91df;
+  --easy-accent-soft: rgba(77, 145, 223, 0.16);
+  --easy-score-shadow: 0 12px 32px rgba(0, 0, 0, 0.34);
+}
+
+html.easy-consumer-ui,
+html.easy-consumer-ui body {
+  background: var(--easy-bg);
+}
+
+html.easy-consumer-ui .workbench-root {
+  background:
+    radial-gradient(circle at 52% 16%, rgba(65, 92, 128, 0.10), transparent 34%),
+    var(--easy-bg);
+}
+
+/* --------------------------------------------------------------------------
+   Top bar: only the controls a first-time user needs stay visible.
+   -------------------------------------------------------------------------- */
+
+html.easy-consumer-ui .top-command-bar {
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  padding: 0 10px;
+  gap: 10px;
+  background: rgba(20, 22, 27, 0.96);
+  border-bottom-color: var(--easy-border);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(14px);
+}
+
+html.easy-consumer-ui .topbar-left {
+  min-width: max-content;
+  gap: 8px;
+}
+
+html.easy-consumer-ui .brand-title {
+  font-size: 15px;
+  letter-spacing: 0.15px;
+}
+
+html.easy-consumer-ui .brand-badge {
+  display: none;
+}
+
+html.easy-consumer-ui .topbar-left > .metadata-pills {
+  display: none;
+}
+
+html.easy-consumer-ui .topbar-center {
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+  gap: 8px;
+}
+
+html.easy-consumer-ui .transport-cluster {
+  padding: 2px;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.035);
+  border-color: var(--easy-border);
+  border-radius: 8px;
+}
+
+html.easy-consumer-ui .transport-cluster .btn {
+  min-height: 32px;
+  padding-inline: 10px;
+  border-radius: 6px;
+}
+
+html.easy-consumer-ui .timecode-display {
+  min-width: 122px;
+  padding: 0 5px;
+  font-size: 12px;
+  letter-spacing: 0.25px;
+}
+
+html.easy-consumer-ui .measure-beat-badge {
+  padding: 4px 8px;
+  color: #b8d8ff;
+  background: rgba(77, 145, 223, 0.10);
+  border-color: rgba(77, 145, 223, 0.22);
+}
+
+html.easy-consumer-ui .topbar-right {
+  min-width: max-content;
+  gap: 5px;
+}
+
+html.easy-consumer-ui .range-controls,
+html.easy-consumer-ui #btn-loop,
+html.easy-consumer-ui #btn-export-draft,
+html.easy-consumer-ui #metadata-drawer {
+  display: none;
+}
+
+.easy-consumer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.easy-consumer-btn,
+.easy-consumer-summary {
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid var(--easy-border);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--text-secondary);
+  font: 600 12px/1 var(--font-sans);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.easy-consumer-btn:hover,
+.easy-consumer-summary:hover,
+.easy-consumer-btn[aria-expanded="true"] {
+  color: #fff;
+  background: rgba(77, 145, 223, 0.14);
+  border-color: rgba(77, 145, 223, 0.35);
+}
+
+.easy-consumer-btn.primary {
+  color: #fff;
+  background: #367cc8;
+  border-color: #4d91df;
+}
+
+.easy-tools-drawer {
+  position: relative;
+}
+
+.easy-tools-drawer > summary {
+  list-style: none;
+}
+
+.easy-tools-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.easy-tools-content {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 200;
+  display: grid;
+  gap: 10px;
+  width: min(430px, calc(100vw - 24px));
+  padding: 12px;
+  border: 1px solid var(--easy-border);
+  border-radius: 10px;
+  background: rgba(24, 27, 33, 0.98);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(18px);
+}
+
+.easy-tools-title {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+
+html.easy-consumer-ui .easy-tools-content .range-controls {
+  display: grid;
+  grid-template-columns: auto minmax(58px, 1fr) auto auto minmax(58px, 1fr) auto auto;
+  gap: 5px;
+  width: 100%;
+  padding: 7px;
+}
+
+html.easy-consumer-ui .easy-tools-content #btn-loop,
+html.easy-consumer-ui .easy-tools-content #btn-export-draft,
+html.easy-consumer-ui .easy-tools-content #metadata-drawer {
+  display: inline-flex;
+}
+
+html.easy-consumer-ui .easy-tools-content #metadata-drawer {
+  width: 100%;
+}
+
+html.easy-consumer-ui .easy-tools-content #metadata-drawer > summary {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+html.easy-consumer-ui .easy-tools-content .transport-drawer-content {
+  position: static;
+  width: 100%;
+  min-width: 0;
+  margin-top: 6px;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* --------------------------------------------------------------------------
+   Main workspace: the score owns the screen. Inspector becomes an overlay.
+   -------------------------------------------------------------------------- */
+
+html.easy-consumer-ui .main-stage {
+  display: grid;
+  grid-template-columns: var(--leftpanel-width) minmax(0, 1fr);
+  height: calc(100vh - var(--topbar-height) - var(--bottombar-height));
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+html.easy-consumer-ui .page-navigator {
+  width: var(--leftpanel-width);
+  min-width: 0;
+  background: rgba(21, 24, 29, 0.94);
+  border-right-color: var(--easy-border);
+}
+
+html.easy-consumer-ui .panel-header {
+  min-height: 34px;
+  padding: 5px 7px;
+  font-size: 9px;
+  letter-spacing: 0.35px;
+}
+
+html.easy-consumer-ui .thumbnails-list {
+  gap: 8px;
+  padding: 8px;
+}
+
+html.easy-consumer-ui .thumbnail-card {
+  border-width: 1px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+html.easy-consumer-ui .thumbnail-card:hover {
+  transform: translateY(-1px);
+}
+
+html.easy-consumer-ui .thumbnail-card.active {
+  border-color: #65a7ef;
+  box-shadow: 0 0 0 2px rgba(77, 145, 223, 0.42);
+}
+
+html.easy-consumer-ui .thumb-meta {
+  padding: 3px 4px;
+  font-size: 8px;
+}
+
+html.easy-consumer-ui .score-viewport {
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 12px 12px;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(68, 89, 116, 0.12), transparent 34%),
+    #0d1015;
+  scrollbar-gutter: stable;
+}
+
+html.easy-consumer-ui .score-toolbar {
+  width: min(100%, 1240px);
+  min-height: 34px;
+  margin-bottom: 6px;
+  padding: 4px 7px;
+  gap: 6px;
+  border-color: var(--easy-border);
+  border-radius: 8px;
+  background: rgba(25, 28, 34, 0.90);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+html.easy-consumer-ui .score-mode-pill {
+  padding: 4px 9px;
+  font-size: 11px;
+  border-radius: 5px;
+}
+
+html.easy-consumer-ui .score-mode-pill.active {
+  background: #367cc8;
+  box-shadow: none;
+}
+
+html.easy-consumer-ui #score-page-indicator {
+  color: var(--text-secondary) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+html.easy-consumer-ui .score-live-readout,
+html.easy-consumer-ui #score-follow-state,
+html.easy-consumer-ui .score-source-banner {
+  display: none !important;
+}
+
+html.easy-consumer-ui .score-source-selector {
+  margin-left: auto;
+  padding: 2px 6px;
+  font-size: 9px;
+}
+
+html.easy-consumer-ui .score-paper-sheet {
+  width: 100%;
+  max-width: 1240px;
+  min-height: 0;
+  padding: 9px 12px 14px;
+  border: 1px solid #d8d5ce;
+  border-radius: 3px;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.16), transparent 32%),
+    #f7f5ef;
+  box-shadow: var(--easy-score-shadow);
+}
+
+html.easy-consumer-ui .score-svg-frame {
+  gap: 10px;
+}
+
+html.easy-consumer-ui .score-source-layer {
+  padding-bottom: 8px;
+}
+
+html.easy-consumer-ui .score-source-heading {
+  min-height: 18px;
+  padding: 0 2px 5px;
+  font-size: 9px;
+  opacity: 0.72;
+}
+
+html.easy-consumer-ui .score-source-meta {
+  font-size: 8px;
+}
+
+/* Important: keep the notation SVG intrinsically sized and visible. */
+html.easy-consumer-ui .score-svg-frame > .score-source-canvas > svg,
+html.easy-consumer-ui .score-svg-frame .score-source-canvas > svg,
+html.easy-consumer-ui .score-source-canvas > svg,
+html.easy-consumer-ui .score-svg-frame svg.definition-scale,
+html.easy-consumer-ui .score-source-canvas svg.definition-scale {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+html.easy-consumer-ui .score-karaoke-cursor-line {
+  stroke: #ef665f;
+  stroke-width: 2px;
+  filter: none;
+}
+
+html.easy-consumer-ui .score-playhead-handle,
+html.easy-consumer-ui .score-playhead-handle-bottom {
+  filter: none;
+}
+
+/* --------------------------------------------------------------------------
+   Right inspector: hidden until the user asks for lyrics or feedback.
+   -------------------------------------------------------------------------- */
+
+html.easy-consumer-ui .lyric-inspector {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 80;
+  width: min(320px, calc(100vw - 28px));
+  height: auto;
+  border: 1px solid var(--easy-border);
+  border-radius: 10px;
+  background: rgba(25, 28, 34, 0.985);
+  box-shadow: 0 20px 54px rgba(0, 0, 0, 0.52);
+  overflow: hidden;
+  transform: translateX(calc(100% + 24px));
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 160ms cubic-bezier(.2,.8,.2,1), opacity 120ms ease;
+}
+
+html.easy-consumer-ui .lyric-inspector.is-open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.easy-inspector-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 36px;
+  padding: 5px 7px 5px 10px;
+  border-bottom: 1px solid var(--easy-border);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.easy-inspector-title {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.easy-inspector-close {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.easy-inspector-close:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.07);
+}
+
+html.easy-consumer-ui .inspector-tabs {
+  padding-top: 3px;
+  background: transparent;
+  border-bottom-color: var(--easy-border);
+}
+
+html.easy-consumer-ui .inspector-banner {
+  padding: 6px 9px;
+  font-size: 10px;
+}
+
+html.easy-consumer-ui .lyric-list-container {
+  padding: 3px 0;
+}
+
+html.easy-consumer-ui .lyric-row {
+  gap: 3px;
+  padding: 7px 10px;
+}
+
+html.easy-consumer-ui .row-meta-bar {
+  font-size: 9px;
+}
+
+html.easy-consumer-ui .row-text-display {
+  font-size: 13px;
+}
+
+html.easy-consumer-ui .inspector-detail-pane {
+  max-height: 235px;
+  overflow-y: auto;
+  padding: 9px;
+  gap: 7px;
+}
+
+.easy-inspector-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+html.easy-consumer-ui.inspector-open .easy-inspector-scrim {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Bottom: compact song progress bar, not a DAW editor lane.
+   -------------------------------------------------------------------------- */
+
+html.easy-consumer-ui .bottom-timeline-bar {
+  position: relative;
+  height: var(--bottombar-height);
+  min-height: var(--bottombar-height);
+  padding: 6px 12px 5px;
+  gap: 4px;
+  background: rgba(20, 22, 27, 0.98);
+  border-top-color: var(--easy-border);
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.18);
+}
+
+html.easy-consumer-ui .timeline-track-wrap {
+  height: 26px;
+  min-height: 26px;
+  border-color: var(--easy-border);
+  border-radius: 7px;
+  background: #15181d;
+  overflow: visible;
+}
+
+html.easy-consumer-ui .timeline-markers-canvas {
+  border-radius: 7px;
+  opacity: 0.82;
+}
+
+html.easy-consumer-ui .timeline-playhead {
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: #ef665f;
+  box-shadow: none;
+}
+
+html.easy-consumer-ui .timeline-playhead::before {
+  top: -4px;
+  left: -4px;
+  width: 10px;
+  height: 7px;
+  background: #ef665f;
+  filter: none;
+}
+
+html.easy-consumer-ui .timeline-feedback-marker {
+  width: 2px;
+  opacity: 0.92;
+}
+
+html.easy-consumer-ui .timeline-feedback-marker::after {
+  top: -2px;
+  width: 7px;
+  height: 7px;
+}
+
+html.easy-consumer-ui .timeline-hover-tooltip {
+  top: -25px;
+  border-color: var(--easy-border);
+  background: rgba(22, 25, 31, 0.97);
+}
+
+html.easy-consumer-ui .timeline-info-row {
+  min-height: 15px;
+  gap: 8px;
+  font-size: 9px;
+  line-height: 1.1;
+}
+
+html.easy-consumer-ui #timeline-active-event,
+html.easy-consumer-ui .timeline-info-row > div:last-child > span:first-child,
+html.easy-consumer-ui #timeline-duration-info {
+  display: none !important;
+}
+
+html.easy-consumer-ui #timeline-active-info {
+  max-width: min(72vw, 760px);
+  overflow: hidden;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.easy-section-label {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 9;
+  transform: translateX(-50%);
+  max-width: 36vw;
+  overflow: hidden;
+  padding: 2px 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  background: rgba(12, 14, 18, 0.72);
+  color: #d7dde7;
+  font-size: 9px;
+  font-weight: 750;
+  pointer-events: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Feedback surfaces: clearer than the previous dense DAW styling.
+   -------------------------------------------------------------------------- */
+
+html.easy-consumer-ui .feedback-card {
+  padding: 10px;
+  border-radius: 8px;
+  border-inline-start: 3px solid var(--feedback-color, #70a9e8);
+}
+
+html.easy-consumer-ui .feedback-card.resolved {
+  opacity: 1;
+  background: rgba(35, 55, 49, 0.34);
+}
+
+html.easy-consumer-ui .feedback-card.resolved .feedback-card-text {
+  text-decoration: none;
+  color: var(--text-secondary);
+}
+
+html.easy-consumer-ui .score-feedback-pin circle.pin-dot {
+  fill: var(--feedback-color, #70a9e8);
+}
+
+html.easy-consumer-ui .feedback-dialog {
+  width: min(520px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  border-radius: 10px;
+  background: #1a1d23;
+}
+
+html.easy-consumer-ui .dialog-body {
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+html.easy-consumer-ui .pill-btn {
+  min-height: 30px;
+  padding: 5px 9px;
+  border-radius: 7px;
+}
+
+html.easy-consumer-ui .input-textarea {
+  min-height: 92px;
+  border-radius: 7px;
+}
+
+/* --------------------------------------------------------------------------
+   Small screens: page list also becomes an overlay so notation stays dominant.
+   -------------------------------------------------------------------------- */
+
+.easy-pages-toggle {
+  display: none;
+}
+
+@media (max-width: 1180px) {
+  html.easy-consumer-ui {
+    --leftpanel-width: 82px;
+  }
+
+  html.easy-consumer-ui .measure-beat-badge {
+    display: none;
+  }
+
+  html.easy-consumer-ui .easy-consumer-btn .easy-label-optional {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  html.easy-consumer-ui .main-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  html.easy-consumer-ui .page-navigator {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    bottom: 8px;
+    z-index: 82;
+    width: 104px;
+    border: 1px solid var(--easy-border);
+    border-radius: 9px;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.46);
+    transform: translateX(calc(-100% - 24px));
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 160ms ease, opacity 120ms ease;
+  }
+
+  html.easy-consumer-ui .page-navigator.is-open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .easy-pages-toggle {
+    display: inline-flex;
+  }
+
+  html.easy-consumer-ui .score-viewport {
+    padding-inline: 7px;
+  }
+
+  html.easy-consumer-ui .score-paper-sheet {
+    padding-inline: 7px;
+  }
+
+  html.easy-consumer-ui .score-source-meta {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  html.easy-consumer-ui .top-command-bar {
+    padding-inline: 7px;
+  }
+
+  html.easy-consumer-ui .brand-title {
+    font-size: 13px;
+  }
+
+  html.easy-consumer-ui .topbar-center {
+    justify-content: flex-start;
+  }
+
+  html.easy-consumer-ui .transport-cluster #btn-stop span:last-child,
+  html.easy-consumer-ui .transport-cluster #play-text {
+    display: none;
+  }
+
+  html.easy-consumer-ui .timecode-display {
+    min-width: 96px;
+    font-size: 10px;
+  }
+
+  html.easy-consumer-ui .easy-consumer-btn {
+    padding-inline: 8px;
+  }
+
+  html.easy-consumer-ui .score-mode-pill-group {
+    max-width: 46vw;
+  }
+
+  html.easy-consumer-ui .score-mode-pill {
+    overflow: hidden;
+    max-width: 88px;
+    text-overflow: ellipsis;
+  }
+
+  html.easy-consumer-ui #score-page-indicator {
+    display: none;
+  }
+
+  html.easy-consumer-ui .bottom-timeline-bar {
+    padding-inline: 7px;
+  }
+
+  .easy-section-label {
+    max-width: 48vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.easy-consumer-ui .lyric-inspector,
+  html.easy-consumer-ui .page-navigator {
+    transition: none;
+  }
+}
