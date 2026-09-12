@@ -39,12 +39,27 @@ import {
   exportFeedbackMarkdown
 } from './state.mjs';
 
-// Authoritative musical score timing constants (160 BPM, 4/4 = 1.5s per measure, 121 measures = 181.5s)
-export const SCORE_TOTAL_DURATION = 181.5;
+import {
+  SCORE_TOTAL_DURATION,
+  AUDIO_EOF_DURATION,
+  scorePosition,
+  scoreTimecode,
+  normalizeFeedback
+} from './premium-core.mjs';
+
+import {
+  createWorkbenchPolish,
+  safeStorageRead,
+  safeStorageWrite
+} from './premium-ui.mjs';
+
+export { SCORE_TOTAL_DURATION, AUDIO_EOF_DURATION };
 export const AUDIO_SEEK_THROTTLE_MS = 75;
 
 // Global application state container
 let appState = null;
+let polish = null;
+let lastClockTime = 0;
 let rawScoreData = null;
 let sourceManifest = null;
 let scoreTracks = [];
@@ -227,14 +242,20 @@ async function init() {
       appState.score.totalPages = MULTISTAFF_PAGE_RANGES.length;
     }
 
+    polish = createWorkbenchPolish(el, {
+      closeModal: () => closeFeedbackModal(),
+      saveModal: () => saveFeedbackFromModal(),
+      redrawTimeline: () => renderTimelineCanvas()
+    });
+
     setupEventListeners();
     setupContextMenuAndFeedback();
 
     // Restore saved feedbacks from localStorage
     try {
-      const saved = localStorage.getItem('stardust_score_feedbacks');
+      const saved = safeStorageRead('stardust_score_feedbacks');
       if (saved) {
-        const parsed = JSON.parse(saved);
+        const parsed = typeof saved === 'string' ? JSON.parse(saved) : saved;
         appState = loadFeedbacks(appState, parsed);
       }
     } catch (err) {
@@ -1571,18 +1592,71 @@ function stopScoreAnimation() {
 
 function runScoreAnimationFrame() {
   scoreAnimationFrame = 0;
-  if (!el.audio || el.audio.paused) return;
-  const t = el.audio.currentTime;
+  if (!appState?.playback?.isPlaying) return;
+
+  const now = performance.now();
+  let t = appState.playback.currentTime;
+
+  if (t < AUDIO_EOF_DURATION && el.audio && !el.audio.paused) {
+    t = el.audio.currentTime;
+    lastClockTime = now;
+  } else {
+    // Decoupled master clock past audio EOF (167.39s to 181.50s outro silence)
+    const dt = lastClockTime > 0 ? (now - lastClockTime) / 1000 : 0.016;
+    lastClockTime = now;
+    t = t + dt;
+  }
+
+  const duration = SCORE_TOTAL_DURATION;
+  const { rangeA, rangeB, loop } = appState.playback;
+  const rangeActive = isRangeValid(rangeA, rangeB, duration);
+  const targetEnd = rangeActive ? rangeB : duration;
+
+  if (t >= targetEnd) {
+    if (loop) {
+      const targetStart = rangeActive ? (rangeA || 0) : 0;
+      appState = setTime(appState, targetStart);
+      setAllAudioTime(targetStart);
+      if (targetStart < AUDIO_EOF_DURATION) {
+        void playAllAudio();
+      }
+      lastClockTime = performance.now();
+      t = targetStart;
+    } else {
+      appState = setTime(appState, targetEnd);
+      appState = pause(appState);
+      pauseAllAudio();
+      stopScoreAnimation();
+      syncUI();
+      return;
+    }
+  } else {
+    appState = setTime(appState, t);
+  }
+
   updateScoreCursorFast(t, { autoFollow: true });
-  const duration = appState?.playback.duration || SCORE_TOTAL_DURATION;
-  const playheadPct = duration > 0 ? (t / duration) * 100 : 0;
-  el.timelinePlayhead.style.left = `${Math.min(100, Math.max(0, playheadPct))}%`;
-  el.timecodeDisplay.textContent = `${formatTime(t)} / ${formatTime(duration)}`;
-  scoreAnimationFrame = requestAnimationFrame(runScoreAnimationFrame);
+
+  if (polish) {
+    polish.paintTimeline(t);
+  } else {
+    const playheadPct = duration > 0 ? (t / duration) * 100 : 0;
+    el.timelinePlayhead.style.left = `${Math.min(100, Math.max(0, playheadPct))}%`;
+  }
+
+  const pos = scorePosition(t);
+  if (el.measureBeatBadge) {
+    el.measureBeatBadge.textContent = pos.formatted;
+  }
+  el.timecodeDisplay.textContent = `${scoreTimecode(t)} / ${scoreTimecode(duration)}`;
+
+  if (appState.playback.isPlaying) {
+    scoreAnimationFrame = requestAnimationFrame(runScoreAnimationFrame);
+  }
 }
 
 function startScoreAnimation() {
-  if (!el.audio || el.audio.paused || scoreAnimationFrame) return;
+  if (scoreAnimationFrame) return;
+  lastClockTime = performance.now();
   scoreAnimationFrame = requestAnimationFrame(runScoreAnimationFrame);
 }
 
@@ -1760,6 +1834,11 @@ function updateDraftCount() {
  * Setup Timeline Canvas (Daw ruler, 121 measure grid ticks, section colored bands, 29 vocal phrase blocks)
  */
 function renderTimelineCanvas() {
+  if (polish) {
+    const audioDur = (el.audio && el.audio.duration && !isNaN(el.audio.duration)) ? el.audio.duration : AUDIO_EOF_DURATION;
+    polish.drawTimeline(appState?.data?.lyric_lines || [], audioDur);
+    return;
+  }
   const canvas = el.timelineCanvas;
   if (!canvas) return;
   const rect = canvas.getBoundingClientRect();
@@ -1859,13 +1938,12 @@ function syncUI() {
   const { currentTime, duration, isPlaying, loop, rangeA, rangeB, activeLineIndex } = appState.playback;
 
   // Timecode
-  el.timecodeDisplay.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
+  el.timecodeDisplay.textContent = `${scoreTimecode(currentTime)} / ${scoreTimecode(duration)}`;
 
-  // Measure Beat Badge
-  const barNum = Math.min(121, Math.max(1, Math.floor(currentTime / 1.5) + 1));
-  const beatInBar = ((currentTime % 1.5) / 1.5) * 4.0 + 1.0;
+  // Measure Beat Badge (Score Position)
+  const pos = scorePosition(currentTime);
   if (el.measureBeatBadge) {
-    el.measureBeatBadge.textContent = `BAR ${barNum} · BEAT ${beatInBar.toFixed(1)}`;
+    el.measureBeatBadge.textContent = pos.formatted;
   }
 
   // Play/Pause button
@@ -1894,9 +1972,13 @@ function syncUI() {
     el.timelineRangeHighlight.style.display = 'none';
   }
 
-  // Playhead position
-  const playheadPct = duration > 0 ? (currentTime / duration) * 100 : 0;
-  el.timelinePlayhead.style.left = `${Math.min(100, Math.max(0, playheadPct))}%`;
+  // Playhead position via GPU translate3d
+  if (polish) {
+    polish.paintTimeline(currentTime, { announce: true });
+  } else {
+    const playheadPct = duration > 0 ? (currentTime / duration) * 100 : 0;
+    el.timelinePlayhead.style.left = `${Math.min(100, Math.max(0, playheadPct))}%`;
+  }
 
   // Active lyric row highlighting (pure zero-reflow O(1) cached element toggle)
   if (activeLineIndex !== lastHighlightedLineIndex) {
@@ -2013,9 +2095,17 @@ function setupEventListeners() {
   });
 
   el.audio.addEventListener('play', startScoreAnimation);
-  el.audio.addEventListener('pause', stopScoreAnimation);
+  el.audio.addEventListener('pause', () => {
+    if (appState?.playback?.currentTime < AUDIO_EOF_DURATION && !appState?.playback?.isPlaying) {
+      stopScoreAnimation();
+    }
+  });
 
   el.audio.addEventListener('ended', () => {
+    // Continue master monotonic clock through outro silence (167.39s to 181.50s)
+    if (appState?.playback?.isPlaying && appState.playback.currentTime < SCORE_TOTAL_DURATION) {
+      return;
+    }
     stopScoreAnimation();
     appState = pause(appState);
     syncUI();
@@ -2023,27 +2113,23 @@ function setupEventListeners() {
 
   // Transport buttons
   el.btnPlayPause.addEventListener('click', async () => {
-    if (el.audio.paused) {
+    if (!appState.playback.isPlaying) {
       appState = play(appState);
       syncUI();
 
-      try {
-        const didPlay = await playAllAudio();
-        if (!didPlay) {
-          pauseAllAudio();
-          appState = pause(appState);
-          syncUI();
+      if (appState.playback.currentTime < AUDIO_EOF_DURATION) {
+        try {
+          await playAllAudio();
+        } catch (err) {
+          console.warn('Audio play prevented:', err);
         }
-      } catch (err) {
-        pauseAllAudio();
-        appState = pause(appState);
-        syncUI();
-        console.warn('Audio play prevented:', err);
       }
+      startScoreAnimation();
       return;
     }
 
     pauseAllAudio();
+    stopScoreAnimation();
     appState = pause(appState);
     syncUI();
   });
@@ -2376,6 +2462,10 @@ function showToast(message) {
  * Switch Inspector Tab between 'lyrics' and 'feedbacks'
  */
 function switchInspectorTab(tabName) {
+  if (polish) {
+    polish.selectInspectorTab(tabName);
+    return;
+  }
   const isLyrics = tabName === 'lyrics';
   if (el.tabLyrics) {
     el.tabLyrics.classList.toggle('active', isLyrics);
@@ -2385,8 +2475,8 @@ function switchInspectorTab(tabName) {
     el.tabFeedbacks.classList.toggle('active', !isLyrics);
     el.tabFeedbacks.setAttribute('aria-selected', String(!isLyrics));
   }
-  if (el.paneLyrics) el.paneLyrics.style.display = isLyrics ? 'block' : 'none';
-  if (el.paneFeedbacks) el.paneFeedbacks.style.display = isLyrics ? 'none' : 'block';
+  if (el.paneLyrics) el.paneLyrics.style.display = isLyrics ? 'flex' : 'none';
+  if (el.paneFeedbacks) el.paneFeedbacks.style.display = isLyrics ? 'none' : 'flex';
 }
 
 /**
@@ -2417,9 +2507,12 @@ function renderScoreFeedbackPins(svg, geometryMap) {
     pinG.setAttribute('class', `score-feedback-pin ${fb.resolved ? 'resolved' : ''}`);
     pinG.setAttribute('transform', `translate(${pinX}, ${pinY})`);
     pinG.dataset.feedbackId = fb.id;
+    if (polish) {
+      polish.decorateFeedback(pinG, fb);
+    }
 
     const title = document.createElementNS(ns, 'title');
-    title.textContent = `[m.${fb.bar}.${Math.floor(fb.beat)} · ${formatTime(fb.time)}] ${fb.stem} (${fb.category}): ${fb.text}`;
+    title.textContent = `[m.${fb.bar}.${Math.floor(fb.beat)} · ${scoreTimecode(fb.time)}] ${fb.stem} (${fb.category}): ${fb.text}`;
     pinG.appendChild(title);
 
     const STEM_PIN_COLORS = {
@@ -2498,9 +2591,13 @@ function renderTimelineFeedbackMarkers() {
     const marker = document.createElement('div');
     marker.className = `timeline-feedback-marker ${fb.resolved ? 'resolved' : ''}`;
     marker.style.left = `${pct}%`;
-    const color = STEM_COLORS[fb.stem] || '#F59E0B';
-    marker.style.backgroundColor = color;
-    marker.title = `[m.${fb.bar}.${Math.floor(fb.beat)} · ${formatTime(fb.time)}] ${fb.stem}: ${fb.text}`;
+    if (polish) {
+      polish.decorateFeedback(marker, fb);
+    } else {
+      const color = STEM_COLORS[fb.stem] || '#F59E0B';
+      marker.style.setProperty('--feedback-color', color);
+    }
+    marker.title = `[m.${fb.bar}.${Math.floor(fb.beat)} · ${scoreTimecode(fb.time)}] ${fb.stem}: ${fb.text}`;
 
     marker.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2701,11 +2798,7 @@ function renderFeedbackList() {
  * Persist feedbacks to LocalStorage
  */
 function saveFeedbacksToStorage() {
-  try {
-    localStorage.setItem('stardust_score_feedbacks', JSON.stringify(appState.feedbacks));
-  } catch (err) {
-    console.warn('Failed to save feedbacks to localStorage:', err);
-  }
+  safeStorageWrite('stardust_score_feedbacks', appState.feedbacks);
 }
 
 /**
@@ -2713,31 +2806,36 @@ function saveFeedbacksToStorage() {
  */
 function openScoreContextMenu(x, y, time) {
   currentContextMenuTime = Math.max(0, Math.min(time, appState?.playback?.duration || SCORE_TOTAL_DURATION));
-  const barNum = Math.min(121, Math.max(1, Math.floor(currentContextMenuTime / 1.5) + 1));
-  const beatInBar = ((currentContextMenuTime % 1.5) / 1.5) * 4.0 + 1.0;
+  const pos = scorePosition(currentContextMenuTime);
 
   if (el.ctxBarBeat) {
-    el.ctxBarBeat.textContent = `BAR ${barNum} · BEAT ${beatInBar.toFixed(1)}`;
+    el.ctxBarBeat.textContent = pos.formatted;
   }
   if (el.ctxTimecode) {
-    el.ctxTimecode.textContent = formatTime(currentContextMenuTime);
+    el.ctxTimecode.textContent = scoreTimecode(currentContextMenuTime);
   }
 
-  const menuW = 230;
-  const menuH = 220;
-  const posX = Math.min(window.innerWidth - menuW - 12, Math.max(10, x));
-  const posY = Math.min(window.innerHeight - menuH - 12, Math.max(10, y));
+  if (polish) {
+    polish.openMenu(x, y);
+  } else {
+    const menuW = 230;
+    const menuH = 220;
+    const posX = Math.min(window.innerWidth - menuW - 12, Math.max(10, x));
+    const posY = Math.min(window.innerHeight - menuH - 12, Math.max(10, y));
 
-  el.scoreContextMenu.style.left = `${posX}px`;
-  el.scoreContextMenu.style.top = `${posY}px`;
-  el.scoreContextMenu.style.display = 'flex';
+    el.scoreContextMenu.style.left = `${posX}px`;
+    el.scoreContextMenu.style.top = `${posY}px`;
+    el.scoreContextMenu.style.display = 'flex';
+  }
 }
 
 /**
  * Close Score Context Menu
  */
 function closeScoreContextMenu() {
-  if (el.scoreContextMenu) {
+  if (polish) {
+    polish.closeMenu();
+  } else if (el.scoreContextMenu) {
     el.scoreContextMenu.style.display = 'none';
   }
 }
@@ -2749,11 +2847,10 @@ function openFeedbackModal(time, { feedbackToEdit = null } = {}) {
   activeFeedbackTargetTime = Math.max(0, Math.min(time, appState?.playback?.duration || SCORE_TOTAL_DURATION));
   editingFeedbackId = feedbackToEdit ? feedbackToEdit.id : null;
 
-  const barNum = Math.min(121, Math.max(1, Math.floor(activeFeedbackTargetTime / 1.5) + 1));
-  const beatInBar = ((activeFeedbackTargetTime % 1.5) / 1.5) * 4.0 + 1.0;
+  const pos = scorePosition(activeFeedbackTargetTime);
 
   if (el.feedbackDialogLocation) {
-    el.feedbackDialogLocation.textContent = `BAR ${barNum} · BEAT ${beatInBar.toFixed(1)} · ${formatTime(activeFeedbackTargetTime)}`;
+    el.feedbackDialogLocation.textContent = `${pos.formatted} · ${scoreTimecode(activeFeedbackTargetTime)}`;
   }
 
   // Find active lyric context
@@ -2761,7 +2858,7 @@ function openFeedbackModal(time, { feedbackToEdit = null } = {}) {
   const matchedLine = lines.find(l => activeFeedbackTargetTime >= l.start_time_seconds && activeFeedbackTargetTime <= l.end_time_seconds)
     || lines.find(l => {
       const lineBar = Math.floor(l.start_time_seconds / 1.5) + 1;
-      return lineBar === barNum;
+      return lineBar === pos.bar;
     });
 
   if (matchedLine) {
@@ -2787,7 +2884,7 @@ function openFeedbackModal(time, { feedbackToEdit = null } = {}) {
     });
   } else {
     el.feedbackTextarea.value = '';
-    const savedAuthor = localStorage.getItem('stardust_feedback_author') || 'Reviewer';
+    const savedAuthor = safeStorageRead('stardust_feedback_author', 'Reviewer');
     el.feedbackAuthorInput.value = savedAuthor;
 
     // Reset stem to 'all'
@@ -2804,19 +2901,26 @@ function openFeedbackModal(time, { feedbackToEdit = null } = {}) {
   // If audio is currently playing, pause so user can comfortably type
   if (appState?.playback?.isPlaying) {
     pauseAllAudio();
+    stopScoreAnimation();
     appState = pause(appState);
     syncUI();
   }
 
-  el.feedbackModalBackdrop.style.display = 'flex';
-  setTimeout(() => el.feedbackTextarea.focus(), 50);
+  if (polish) {
+    polish.showModal();
+  } else {
+    el.feedbackModalBackdrop.style.display = 'flex';
+    setTimeout(() => el.feedbackTextarea.focus(), 50);
+  }
 }
 
 /**
  * Close Feedback Input Modal Dialog
  */
-function closeFeedbackModal() {
-  if (el.feedbackModalBackdrop) {
+function closeFeedbackModal({ force = false } = {}) {
+  if (polish) {
+    if (!polish.hideModal({ force })) return;
+  } else if (el.feedbackModalBackdrop) {
     el.feedbackModalBackdrop.style.display = 'none';
   }
   editingFeedbackId = null;
@@ -2840,9 +2944,7 @@ function saveFeedbackFromModal() {
   const category = activeCatBtn ? activeCatBtn.dataset.category : 'general';
 
   const author = el.feedbackAuthorInput.value.trim() || 'Reviewer';
-  try {
-    localStorage.setItem('stardust_feedback_author', author);
-  } catch (err) {}
+  safeStorageWrite('stardust_feedback_author', author);
 
   if (editingFeedbackId) {
     appState = updateFeedback(appState, editingFeedbackId, {

@@ -17,14 +17,7 @@
         </div>
         <div class="metadata-pills">
           <span class="chip chip-pass" title="Composition reference gate verified PASS">&#10003; GATE PASS</span>
-          <span class="chip chip-frozen" title="Melody &amp; Note Mappings are Frozen">&#128274; FROZEN VOCAL CANON</span>
-          <span class="chip chip-primary" id="chip-notes-count">478 Vocal Notes</span>
-          <span class="chip" id="chip-stems-count">4 Synchronized Stems</span>
-          <span class="chip" id="chip-lyrics-count">279 Lyrics</span>
-          <span class="chip" id="chip-nulls-count">199 Nulls</span>
-          <span class="chip" id="chip-lines-count">29 Lines</span>
-          <span class="chip" id="chip-tempo-key">160 BPM &bull; Gm &bull; 4/4</span>
-          <span class="chip chip-pass" id="chip-source" title="Loaded audio source status">SOURCE: FLOW 4-STEM</span>
+          <span class="chip chip-frozen" title="Melody &amp; Note Mappings are Frozen">&#128274; FROZEN CANON</span>
         </div>
       </div>
 
@@ -60,15 +53,33 @@
       </div>
 
       <div class="topbar-right">
-        <!-- Canonical Artifacts Dropdown / Links -->
-        <div style="display: flex; gap: 6px;">
-          <a href="assets/stardust-lead-with-lyrics.musicxml" download="stardust-lead-with-lyrics.musicxml" class="btn btn-secondary" title="Download Canonical Vocal MusicXML">Vocal XML</a>
-          <a href="assets/stardust-multistaff.musicxml" download="stardust-multistaff.musicxml" class="btn btn-secondary" title="Download Multi-Staff 4-Part MusicXML">Multi-Staff XML</a>
-          <a href="assets/stardust-multistaff.mid" download="stardust-multistaff.mid" class="btn btn-secondary" title="Download Multi-Staff 4-Track MIDI">Multi-Staff MIDI</a>
-          <a href="assets/stardust-score-data.json" download="stardust-score-data.json" class="btn btn-secondary" title="Download Canonical Score JSON">JSON</a>
-          <a href="assets/score-contact-sheet.png" target="_blank" class="btn btn-secondary" title="View Score Contact Sheet">Contact Sheet</a>
-          <a href="assets/CANONFLOW_SCORE_LYRIC_CONTRACT.md" target="_blank" class="btn btn-secondary" title="View Reusable Contract">Contract</a>
-        </div>
+        <!-- Collapsible Secondary Drawer -->
+        <details class="transport-drawer" id="metadata-drawer">
+          <summary class="btn btn-secondary" title="곡 정보 및 규격 파일 다운로드">
+            <span>&#8505;&#65039;</span> <span>메타데이터 &amp; 다운로드 &#9662;</span>
+          </summary>
+          <div class="transport-drawer-content">
+            <div class="transport-drawer-section-title">악보 &amp; 음원 메타데이터</div>
+            <div class="metadata-pills" style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span class="chip chip-primary" id="chip-notes-count">478 Vocal Notes</span>
+              <span class="chip" id="chip-stems-count">4 Synchronized Stems</span>
+              <span class="chip" id="chip-lyrics-count">279 Lyrics</span>
+              <span class="chip" id="chip-nulls-count">199 Nulls</span>
+              <span class="chip" id="chip-lines-count">29 Lines</span>
+              <span class="chip" id="chip-tempo-key">160 BPM &bull; Gm &bull; 4/4</span>
+              <span class="chip chip-pass" id="chip-source" title="Loaded audio source status">SOURCE: FLOW 4-STEM</span>
+            </div>
+            <div class="transport-drawer-section-title" style="margin-top: 6px;">공식 산출물 다운로드</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="assets/stardust-lead-with-lyrics.musicxml" download="stardust-lead-with-lyrics.musicxml" class="btn btn-secondary" title="Download Canonical Vocal MusicXML">Vocal XML</a>
+              <a href="assets/stardust-multistaff.musicxml" download="stardust-multistaff.musicxml" class="btn btn-secondary" title="Download Multi-Staff 4-Part MusicXML">Multi-Staff XML</a>
+              <a href="assets/stardust-multistaff.mid" download="stardust-multistaff.mid" class="btn btn-secondary" title="Download Multi-Staff 4-Track MIDI">Multi-Staff MIDI</a>
+              <a href="assets/stardust-score-data.json" download="stardust-score-data.json" class="btn btn-secondary" title="Download Canonical Score JSON">JSON</a>
+              <a href="assets/score-contact-sheet.png" target="_blank" class="btn btn-secondary" title="View Score Contact Sheet">Contact Sheet</a>
+              <a href="assets/CANONFLOW_SCORE_LYRIC_CONTRACT.md" target="_blank" class="btn btn-secondary" title="View Reusable Contract">Contract</a>
+            </div>
+          </div>
+        </details>
         <button class="btn btn-accent" id="btn-export-draft" title="Export Draft Overrides JSON">
           <span>&#128190;</span> <span>Export Draft</span>
         </button>
@@ -231,7 +242,7 @@
 
     <!-- Compact Bottom Timeline & Transport Readout -->
     <footer class="bottom-timeline-bar" role="contentinfo">
-      <div class="timeline-track-wrap" id="timeline-track" role="slider" aria-label="Audio Timeline Scrubber" tabindex="0">
+      <div class="timeline-track-wrap" id="timeline-track" role="slider" aria-label="Audio Timeline Scrubber" aria-valuemin="0" aria-valuemax="181.5" aria-valuenow="0" tabindex="0">
         <canvas class="timeline-markers-canvas" id="timeline-canvas"></canvas>
         <div class="timeline-range-highlight" id="timeline-range-highlight" style="display: none;"></div>
         <div class="timeline-feedback-markers" id="timeline-feedback-markers"></div>
