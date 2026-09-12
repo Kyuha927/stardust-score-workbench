@@ -411,7 +411,7 @@ function renderPageThumbnails() {
     card.setAttribute('aria-label', `Page ${pageNum}: ${range.label}`);
 
     const img = document.createElement('img');
-    img.className = 'thumb-img';
+    img.className = 'thumbnail-img';
     img.alt = `Thumbnail Page ${pageNum}`;
     img.loading = 'lazy';
     img.src = scoreViewMode === 'grand'
@@ -866,6 +866,12 @@ async function updateGrandScorePage(page, pageStr, requestToken, currentRange) {
     nextSvg.setAttribute('role', 'img');
     nextSvg.setAttribute('aria-label', `Stardust 4-Part Grand Score, page ${page} of 12 (${currentRange.label})`);
 
+    if (!nextSvg.getAttribute('viewBox')) {
+      const width = parseFloat(nextSvg.getAttribute('width')) || 588;
+      const height = parseFloat(nextSvg.getAttribute('height')) || 832;
+      nextSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    }
+
     const layer = document.createElement('section');
     layer.className = 'score-source-layer score-multistaff-layer';
     layer.dataset.stemId = 'grand-score';
@@ -895,6 +901,10 @@ async function updateGrandScorePage(page, pageStr, requestToken, currentRange) {
     el.scoreSvgFrame.replaceChildren(fragment);
 
     const renderedSvg = nextSvg.querySelector('svg.definition-scale') || nextSvg;
+    if (renderedSvg) {
+      renderedSvg.setAttribute('width', '100%');
+      renderedSvg.setAttribute('height', '100%');
+    }
     const geometryMap = parseScoreGeometryDOM(renderedSvg, currentRange);
     const notesMap = indexScoreNotes(renderedSvg);
     const overlay = createScoreOverlay(renderedSvg);
@@ -999,10 +1009,19 @@ async function updateStemsScorePage(page, pageStr, requestToken, currentRange) {
           const nextSvg = document.importNode(parsedSvg, true);
           nextSvg.setAttribute('role', 'img');
           nextSvg.setAttribute('aria-label', `Stardust ${track.label} notated staff ${notationIndex}, score page ${page}`);
+          if (!nextSvg.getAttribute('viewBox')) {
+            const width = parseFloat(nextSvg.getAttribute('width')) || 840;
+            const height = parseFloat(nextSvg.getAttribute('height')) || 1188;
+            nextSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+          }
           canvas.appendChild(nextSvg);
           layer.appendChild(canvas);
 
           const renderedSvg = nextSvg.querySelector('svg.definition-scale') || nextSvg;
+          if (renderedSvg) {
+            renderedSvg.setAttribute('width', '100%');
+            renderedSvg.setAttribute('height', '100%');
+          }
           const geometryMap = parseScoreGeometryDOM(renderedSvg, currentRange);
           const notesMap = indexScoreNotes(renderedSvg);
           const overlay = createScoreOverlay(renderedSvg);
@@ -1969,6 +1988,7 @@ function setupEventListeners() {
 
   // Audio playback updates
   el.audio.addEventListener('timeupdate', () => {
+    if (el.audio.paused && !appState.playback.isPlaying) return;
     appState = setTime(appState, el.audio.currentTime);
     syncStemAudioClocks(el.audio.currentTime);
 
@@ -2074,12 +2094,16 @@ function setupEventListeners() {
   let cachedTimelineRect = null;
 
   function getTimeFromPointer(e) {
-    const rect = cachedTimelineRect || el.timelineTrack.getBoundingClientRect();
+    const rect = cachedTimelineRect || (cachedTimelineRect = el.timelineTrack.getBoundingClientRect());
     const clientX = e.clientX ?? (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
     const clickX = clientX - rect.left;
     const pct = Math.max(0, Math.min(1, clickX / rect.width));
     const duration = appState?.playback?.duration || SCORE_TOTAL_DURATION;
     return { pct, time: pct * duration };
+  }
+
+  function onPointerEnter() {
+    cachedTimelineRect = el.timelineTrack.getBoundingClientRect();
   }
 
   function onPointerDown(e) {
@@ -2134,12 +2158,16 @@ function setupEventListeners() {
   }
 
   function onPointerLeave() {
-    if (!isScrubbing && el.timelineHoverGuide && el.timelineHoverTooltip) {
-      el.timelineHoverGuide.style.display = 'none';
-      el.timelineHoverTooltip.style.display = 'none';
+    if (!isScrubbing) {
+      cachedTimelineRect = null;
+      if (el.timelineHoverGuide && el.timelineHoverTooltip) {
+        el.timelineHoverGuide.style.display = 'none';
+        el.timelineHoverTooltip.style.display = 'none';
+      }
     }
   }
 
+  el.timelineTrack.addEventListener('pointerenter', onPointerEnter);
   el.timelineTrack.addEventListener('pointerdown', onPointerDown);
   el.timelineTrack.addEventListener('pointermove', onPointerMove);
   el.timelineTrack.addEventListener('pointerleave', onPointerLeave);
@@ -2194,11 +2222,26 @@ function setupEventListeners() {
 
   // Keyboard Shortcuts (Premiere Pro style scrubbing + transport)
   window.addEventListener('keydown', (e) => {
+    // Modal & Context Menu shortcuts that should work even when typing in input/textarea
+    if (e.key === 'Escape') {
+      closeScoreContextMenu();
+      closeFeedbackModal();
+      return;
+    }
+
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      if (el.feedbackModalBackdrop && el.feedbackModalBackdrop.style.display !== 'none') {
+        e.preventDefault();
+        saveFeedbackFromModal();
+        return;
+      }
+    }
+
     // Ignore when typing inside inputs or textarea
     if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
 
     const duration = appState?.playback?.duration || SCORE_TOTAL_DURATION;
-    const currentTime = el.audio.currentTime || appState?.playback?.currentTime || 0;
+    const currentTime = appState?.playback?.currentTime ?? el.audio.currentTime ?? 0;
 
     if (e.code === 'Space') {
       e.preventDefault();
@@ -2292,6 +2335,7 @@ function setupEventListeners() {
 
   // Handle window resize for timeline canvas
   window.addEventListener('resize', () => {
+    cachedTimelineRect = null;
     renderTimelineCanvas();
     renderTimelineFeedbackMarkers();
   });
@@ -2839,6 +2883,9 @@ function setupContextMenuAndFeedback() {
   // 1. Right click on score viewport / frame
   if (el.scoreViewport) {
     el.scoreViewport.addEventListener('contextmenu', (e) => {
+      if (e.target.closest('#score-controls-bar, .score-toolbar, #score-source-banner')) {
+        return;
+      }
       e.preventDefault();
       const clickedSvg = e.target.closest('svg');
       let t = null;
@@ -2941,6 +2988,21 @@ function setupContextMenuAndFeedback() {
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
         e.preventDefault();
         saveFeedbackFromModal();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeFeedbackModal();
+      }
+    });
+  }
+
+  if (el.feedbackAuthorInput) {
+    el.feedbackAuthorInput.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        saveFeedbackFromModal();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeFeedbackModal();
       }
     });
   }

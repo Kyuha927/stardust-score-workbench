@@ -502,10 +502,11 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 0 2px var(--primary), var(--shadow-md);
 }
 
-.thumbnail-img {
+.thumbnail-img,
+.thumb-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -674,6 +675,7 @@ h1, h2, h3, h4 {
 
 .score-paper-sheet {
   background-color: var(--paper-cream);
+  color: var(--text-score);
   border: 1px solid var(--paper-border);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-paper);
@@ -749,6 +751,7 @@ h1, h2, h3, h4 {
 
 .score-source-canvas {
   width: 100%;
+  color: var(--text-score);
 }
 
 .score-source-missing {
@@ -833,10 +836,20 @@ h1, h2, h3, h4 {
   color: #0E7490;
 }
 
-.score-svg-frame svg {
+.score-svg-frame > .score-source-canvas > svg,
+.score-svg-frame .score-source-canvas > svg,
+.score-source-canvas > svg {
   width: 100%;
   height: auto;
   display: block;
+  overflow: visible;
+}
+
+.score-svg-frame svg.definition-scale,
+.score-source-canvas svg.definition-scale {
+  width: 100% !important;
+  height: 100% !important;
+  display: inline !important;
   overflow: visible;
 }
 
